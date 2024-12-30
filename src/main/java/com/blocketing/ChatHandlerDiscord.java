@@ -25,7 +25,7 @@ public class ChatHandlerDiscord {
     public static void startServer(MinecraftServer minecraftServer) {
         try {
             // Starts the HTTP server on port 3001
-            HttpServer server = HttpServer.create(new InetSocketAddress(7169), 0); // Start HTTP server on port 3001
+            HttpServer server = HttpServer.create(new InetSocketAddress(7169), 0);
             server.createContext("/discord-to-minecraft", exchange -> handleDiscordMessage(exchange, minecraftServer));
             server.createContext("/execute-command", exchange -> handleCommand(exchange, minecraftServer));
             server.setExecutor(null);
@@ -85,6 +85,7 @@ public class ChatHandlerDiscord {
     private static void handleCommand(HttpExchange exchange, MinecraftServer minecraftServer) {
         if ("POST".equals(exchange.getRequestMethod())) {
             try {
+                // Process the request
                 BufferedReader reader = new BufferedReader(new InputStreamReader(exchange.getRequestBody()));
                 String body = reader.lines().collect(Collectors.joining("\n"));
                 JsonObject json = com.google.gson.JsonParser.parseString(body).getAsJsonObject();
