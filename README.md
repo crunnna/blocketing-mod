@@ -3,6 +3,9 @@
   <h3>Integrate Discord with Minecraft for seamless communication and command execution</h3>
 </div>
 
+## 🔗 Related Repositories
+- [Blocketing Bot](https://github.com/crunnna/blocketing-bot): A Discord bot for seamless communication between a Discord channel and a Minecraft server, enabling bidirectional message synchronization.
+
 ## ✨ Features
 - **Message Relay**: Send messages from a specific Discord channel to a Minecraft server. 💬
 - **Command Execution**: Execute Minecraft commands from Discord with proper permissions. 🛠️
@@ -29,9 +32,6 @@
 ## 🌐 Environment Variables
 - `BOT_TOKEN`: The token of the Discord bot.
 - `CHANNEL_ID`: The ID of the Discord channel.
-
-## 🔗 Related Repositories
-- [Blocketing Bot](https://github.com/crunnna/blocketing-bot): A Discord bot for seamless communication between a Discord channel and a Minecraft server, enabling bidirectional message synchronization.
 
 ## 🙏 Acknowledgements
 - [Fabric](https://fabricmc.net/) for the Minecraft modding framework.
