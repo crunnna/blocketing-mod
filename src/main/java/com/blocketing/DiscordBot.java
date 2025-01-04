@@ -8,7 +8,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 public class DiscordBot {
 
-    private static final Dotenv dotenv = Dotenv.load();
+    private static final Dotenv dotenv = Dotenv.configure().directory("../").load();                                                                                                                                                                                                                                // Thanks to euphoriys solving a bug with adding an additional "."
     private static final String BOT_TOKEN = dotenv.get("BOT_TOKEN");
     private static final String CHANNEL_ID = dotenv.get("CHANNEL_ID");
 

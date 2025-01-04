@@ -40,7 +40,7 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	// Dotenv for loading .env files
-	implementation 'io.github.cdimascio:java-dotenv:5.2.2'
+	implementation 'io.github.cdimascio:dotenv-java:3.1.0'
 }
 
 processResources {
