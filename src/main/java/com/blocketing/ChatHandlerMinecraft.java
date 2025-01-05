@@ -1,11 +1,14 @@
 package com.blocketing;
 
 import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.network.message.MessageType;
 import net.minecraft.network.message.SignedMessage;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.fabricmc.fabric.api.networking.v1.PacketSender;
 
 /**
  * This class would be responsible for monitoring Minecraft chat messages and sending them to Discord.
@@ -13,10 +16,12 @@ import net.minecraft.text.Text;
 public class ChatHandlerMinecraft {
 
     /**
-     * Registers the *onChatMessage* method with the *ServerMessageEvents.CHAT_MESSAGE* event to process chat messages
+     * Registers the event handlers for chat messages, player join, and player disconnect events.
      */
     public static void register() {
         ServerMessageEvents.CHAT_MESSAGE.register(ChatHandlerMinecraft::onChatMessage);
+        ServerPlayConnectionEvents.JOIN.register(ChatHandlerMinecraft::onPlayerJoin);
+        ServerPlayConnectionEvents.DISCONNECT.register(ChatHandlerMinecraft::onPlayerDisconnect);
     }
 
     /**
@@ -35,7 +40,6 @@ public class ChatHandlerMinecraft {
 
     /**
      * Sends the chat message to the Discord-Bot.
-     *
      * @param playerName The name of the player who sent the message.
      * @param chatMessage The chat message.
      */
@@ -45,14 +49,34 @@ public class ChatHandlerMinecraft {
 
     /**
      * Sends a message to all players in the Minecraft chat.
-     *
      * @param minecraftServer The Minecraft server.
-     * @param username The username of the player who sent the message.
+     * @param username The username to mention in the message.
      * @param content The content of the message.
      */
     public static void sendMessageToAllPlayers(MinecraftServer minecraftServer, String username, String content) {
         for (ServerPlayerEntity player : minecraftServer.getPlayerManager().getPlayerList()) {
             player.sendMessage(Text.of("<@DC_" + username + "> " + content), false);
         }
+    }
+
+    /**
+     * Handles player join events.
+     * @param handler The network handler for the player.
+     * @param sender The packet sender.
+     * @param server The Minecraft server.
+     */
+    private static void onPlayerJoin(ServerPlayNetworkHandler handler, PacketSender sender, MinecraftServer server) {
+        String playerName = handler.getPlayer().getGameProfile().getName();
+        DiscordBot.sendEmbed("Player Joined", "**" + playerName + "** joined the server.", 0x00FF00); // Green color
+    }
+
+    /**
+     * Handles player disconnect events.
+     * @param handler The network handler for the player.
+     * @param server The Minecraft server.
+     */
+    private static void onPlayerDisconnect(ServerPlayNetworkHandler handler, MinecraftServer server) {
+        String playerName = handler.getPlayer().getGameProfile().getName();
+        DiscordBot.sendEmbed("Player Left", "**" + playerName + "** left the server.", 0xFF0000); // Red color
     }
 }

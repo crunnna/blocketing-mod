@@ -8,6 +8,7 @@
 
 ## ✨ Features
 - **Message Relay**: Send messages from a specific Discord channel to a Minecraft server. 💬
+- **Join/Leave Notifications**: Send join and leave messages to a Discord channel as embeds. 🚪
 - **Command Execution**: Execute Minecraft commands from Discord with proper permissions. 🛠️
 - **HTTP Server**: Receive messages and commands from Discord via HTTP requests. 🌐
 
@@ -16,7 +17,7 @@
 > To set up your Blocketing Mod, begin by cloning the repository and building the project. Once built, create a `config.properties` file in the `src/main/resources` directory and add your configuration.
 > ```sh
 > git clone https://github.com/crunnna/blocketing-fabric-mod.git
-> cd blocketing-mod
+> cd blocketing-1.21.4
 > ./gradlew build
 > ```
 > Add your configuration to the config.properties file:
