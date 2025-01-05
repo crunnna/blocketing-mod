@@ -38,9 +38,6 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-
-	// Dotenv for loading .env files
-	implementation 'io.github.cdimascio:dotenv-java:3.1.0'
 }
 
 processResources {

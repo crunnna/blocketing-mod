@@ -13,13 +13,13 @@
 
 ## ⚡ Getting Started
 > [!IMPORTANT]
-> To set up your Blocketing Mod, begin by cloning the repository and building the project. Once built, create a `.env` file in the root directory and add your configuration.
+> To set up your Blocketing Mod, begin by cloning the repository and building the project. Once built, create a `config.properties` file in the `src/main/resources` directory and add your configuration.
 > ```sh
 > git clone https://github.com/crunnna/blocketing-fabric-mod.git
 > cd blocketing-mod
 > ./gradlew build
 > ```
-> Add your configuration to the `.env` file:
+> Add your configuration to the config.properties file:
 > ```env
 > BOT_TOKEN=your_discord_bot_token
 > CHANNEL_ID=your_discord_channel_id

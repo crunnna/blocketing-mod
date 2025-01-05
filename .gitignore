@@ -40,4 +40,4 @@ replay_*.log
 *.jfr
 
 # environment variables
-.env
+/src/main/resources/config.properties
