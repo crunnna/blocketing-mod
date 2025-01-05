@@ -16,7 +16,7 @@
 > To set up your Blocketing Mod, begin by cloning the repository and building the project. Once built, create a `config.properties` file in the `src/main/resources` directory and add your configuration.
 > ```sh
 > git clone https://github.com/crunnna/blocketing-fabric-mod.git
-> cd blocketing-mod
+> cd blocketing-1.21.4
 > ./gradlew build
 > ```
 > Add your configuration to the config.properties file:
