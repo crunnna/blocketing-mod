@@ -12,8 +12,11 @@ public class DiscordBot {
 
     private static String BOT_TOKEN;
     private static String CHANNEL_ID;
-    static { loadConfig(); }
+    static { loadConfig(); } // Load the configuration when the class is loaded
 
+    /**
+     * Loads the configuration from the 'config.properties' file.
+     */
     private static void loadConfig() {
         Properties config = new Properties();
 
@@ -35,15 +38,29 @@ public class DiscordBot {
         }
     }
 
+    /**
+     * Sends a plain text message to the Discord channel.
+     * @param message The message to send.
+     */
     public static void sendMessage(String message) {
         sendPayload("{ \"content\": \"" + message + "\" }");
     }
 
+    /**
+     * Sends an embed message to the Discord channel.
+     * @param title The title of the embed.
+     * @param description The description of the embed.
+     * @param color The color of the embed.
+     */
     public static void sendEmbed(String title, String description, int color) {
         String jsonPayload = "{ \"embeds\": [{ \"title\": \"" + title + "\", \"description\": \"" + description + "\", \"color\": " + color + " }] }";
         sendPayload(jsonPayload);
     }
 
+    /**
+     * Sends a JSON payload to the Discord channel using Discord-Bot.
+     * @param jsonPayload The JSON payload to send.
+     */
     private static void sendPayload(String jsonPayload) {
         try {
             if (BOT_TOKEN == null || CHANNEL_ID == null) {
