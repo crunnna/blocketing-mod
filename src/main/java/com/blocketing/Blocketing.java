@@ -29,6 +29,6 @@ public class Blocketing implements ModInitializer {
 	 */
 	private void onServerStart(MinecraftServer minecraftServer) {
 		System.out.println("Server has started. Starting Discord HTTP server...");
-		ChatHandlerDiscord.startServer(minecraftServer);
+		HttpMinecraftServer.startServer(minecraftServer);
 	}
 }
