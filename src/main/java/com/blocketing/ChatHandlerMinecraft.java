@@ -79,4 +79,18 @@ public class ChatHandlerMinecraft {
         String playerName = handler.getPlayer().getGameProfile().getName();
         DiscordBot.sendEmbed("Player Left", "**" + playerName + "** left the server.", 0xFF0000); // Red color
     }
+
+    /**
+     * Sends a message to Discord-Bot when the server starts.
+     */
+    public static void sendServerStartMessage() {
+        DiscordBot.sendEmbed("Server Started", "The Minecraft server has started.", 0x0000FF); // Blue color
+    }
+
+    /**
+     * Sends a message to Discord-Bot when the server stops.
+     */
+    public static void sendServerStopMessage() {
+        DiscordBot.sendEmbed("Server Stopped", "The Minecraft server has stopped.", 0xFFA500); // Orange color
+    }
 }

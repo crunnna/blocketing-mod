@@ -12,6 +12,13 @@
 - **Command Execution**: Execute Minecraft commands from Discord with proper permissions. 🛠️
 - **HTTP Server**: Receive messages and commands from Discord via HTTP requests. 🌐
 
+## 🔨 Before using this mod
+### 🤖 Discord Bot:
+- Before using this mod, you need to create a Discord bot. You can follow a YouTube video for guidance on how to create a Discord bot.
+
+### 🔧Open a Port:
+- To open a port on your Minecraft server, you can watch a YouTube video that explains the process depending on whether you are hosting locally or with a provider.
+
 ## ⚡ Getting Started
 > [!IMPORTANT]
 > To set up your Blocketing Mod, begin by cloning the repository and building the project. Once built, create a `config.properties` file in the `src/main/resources` directory and add your configuration.
@@ -24,6 +31,7 @@
 > ```env
 > BOT_TOKEN=your_discord_bot_token
 > CHANNEL_ID=your_discord_channel_id
+> PORT=your_http_server_minedraft_port
 > ```
 
 ## 🚀 Usage
@@ -33,9 +41,9 @@
 ## 🌐 Environment Variables
 - `BOT_TOKEN`: The token of the Discord bot.
 - `CHANNEL_ID`: The ID of the Discord channel.
+- `PORT`: The port number for the HTTP server.
 
 ## 🙏 Acknowledgements
 - [Fabric](https://fabricmc.net/) for the Minecraft modding framework.
-- [dotenv](https://github.com/cdimascio/dotenv-java) for managing environment variables.
 
 ### For any questions or issues, please open an issue on this repository. I'm here to help!
