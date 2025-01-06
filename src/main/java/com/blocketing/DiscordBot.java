@@ -1,42 +1,14 @@
 package com.blocketing;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
-import java.util.Properties;
 
 public class DiscordBot {
 
-    private static String BOT_TOKEN;
-    private static String CHANNEL_ID;
-    static { loadConfig(); } // Load the configuration when the class is loaded
-
-    /**
-     * Loads the configuration from the 'config.properties' file.
-     */
-    private static void loadConfig() {
-        Properties config = new Properties();
-
-        try (InputStream input = DiscordBot.class.getClassLoader().getResourceAsStream("config.properties")) {
-            if (input == null) {
-                System.err.println("The configuration file 'config.properties' was not found!");
-                return;
-            }
-            config.load(input);
-
-            BOT_TOKEN = config.getProperty("BOT_TOKEN");
-            CHANNEL_ID = config.getProperty("CHANNEL_ID");
-
-            if (BOT_TOKEN == null || CHANNEL_ID == null) {
-                System.err.println("Missing values in the configuration file. Please check the 'config.properties' file.");
-            }
-        } catch (IOException e) {
-            System.err.println("Error loading the configuration file: " + e.getMessage());
-        }
-    }
+    private static final String BOT_TOKEN = ConfigLoader.getProperty("BOT_TOKEN");
+    private static final String CHANNEL_ID = ConfigLoader.getProperty("CHANNEL_ID");
 
     /**
      * Sends a plain text message to the Discord channel.
