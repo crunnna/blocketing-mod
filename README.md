@@ -9,6 +9,7 @@
 ## ✨ Features
 - **Message Relay**: Send messages from a specific Discord channel to a Minecraft server. 💬
 - **Join/Leave Notifications**: Send join and leave messages to a Discord channel as embeds. 🚪
+- **Server Start/Stop Notifications**: Send server start and stop messages to a Discord channel as embeds. 🚀
 - **Command Execution**: Execute Minecraft commands from Discord with proper permissions. 🛠️
 - **HTTP Server**: Receive messages and commands from Discord via HTTP requests. 🌐
 
