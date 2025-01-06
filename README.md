@@ -32,7 +32,7 @@
 > ```env
 > BOT_TOKEN=your_discord_bot_token
 > CHANNEL_ID=your_discord_channel_id
-> PORT=your_http_server_minedraft_port
+> PORT=your_http_server_mineraft_port
 > ```
 
 ## 🚀 Usage
