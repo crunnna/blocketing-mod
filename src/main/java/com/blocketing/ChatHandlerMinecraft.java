@@ -84,13 +84,13 @@ public class ChatHandlerMinecraft {
      * Sends a message to Discord-Bot when the server starts.
      */
     public static void sendServerStartMessage() {
-        DiscordBot.sendEmbed("Server Started", "The Minecraft server has started.", 0x0000FF); // Blue color
+        DiscordBot.sendEmbed("Server Started", "The Minecraft server has started.", 0x800080); // Purple color
     }
 
     /**
      * Sends a message to Discord-Bot when the server stops.
      */
     public static void sendServerStopMessage() {
-        DiscordBot.sendEmbed("Server Stopped", "The Minecraft server has stopped.", 0xFFA500); // Orange color
+        DiscordBot.sendEmbed("Server Stopped", "The Minecraft server has stopped.", 0x40E0D0); // Turquoise color
     }
 }
