@@ -67,7 +67,10 @@ public class ChatHandlerMinecraft {
      */
     private static void onPlayerJoin(ServerPlayNetworkHandler handler, PacketSender sender, MinecraftServer server) {
         String playerName = handler.getPlayer().getGameProfile().getName();
-        DiscordBot.sendEmbed("Player Joined", "**" + playerName + "** joined the server.", 0x00FF00); // Green color
+        String playerUUID = handler.getPlayer().getUuid().toString();
+        String avatarUrl = "https://api.mineatar.io/face/" + playerUUID + "?scale=8"; // Get the player's avatar    (scale= (4=mini, 8=normal, 12=big))
+
+        DiscordBot.sendEmbed("Player Joined", "**" + playerName + "** joined the server.", 0x00FF00, avatarUrl); // Green colored embed
     }
 
     /**
@@ -77,20 +80,25 @@ public class ChatHandlerMinecraft {
      */
     private static void onPlayerDisconnect(ServerPlayNetworkHandler handler, MinecraftServer server) {
         String playerName = handler.getPlayer().getGameProfile().getName();
-        DiscordBot.sendEmbed("Player Left", "**" + playerName + "** left the server.", 0xFF0000); // Red color
+        String playerUUID = handler.getPlayer().getUuid().toString();
+        String avatarUrl = "https://api.mineatar.io/face/" + playerUUID + "?scale=8"; // Get the player's avatar    (scale= (4=mini, 8=normal, 12=big))
+
+        DiscordBot.sendEmbed("Player Left", "**" + playerName + "** left the server.", 0xFF0000, avatarUrl); // Red colored embed
     }
 
     /**
      * Sends a message to Discord-Bot when the server starts.
      */
     public static void sendServerStartMessage() {
-        DiscordBot.sendEmbed("Server Started", "The Minecraft server has started.", 0x800080); // Purple color
+        String placeholderUrl = "https://example.com/placeholder.png";
+        DiscordBot.sendEmbed("Server Started", "The Minecraft server has started.", 0x800080, placeholderUrl); // Purple colored embed
     }
 
     /**
      * Sends a message to Discord-Bot when the server stops.
      */
     public static void sendServerStopMessage() {
-        DiscordBot.sendEmbed("Server Stopped", "The Minecraft server has stopped.", 0x40E0D0); // Turquoise color
+        String placeholderUrl = "https://example.com/placeholder.png";
+        DiscordBot.sendEmbed("Server Stopped", "The Minecraft server has stopped.", 0x40E0D0, placeholderUrl); // Turquoise colored embed
     }
 }
