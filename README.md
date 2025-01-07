@@ -8,7 +8,7 @@
 
 ## ✨ Features
 - **Message Relay**: Send messages from a specific Discord channel to a Minecraft server. 💬
-- **Join/Leave Notifications**: Send join and leave messages to a Discord channel as embeds. 🚪
+- **Join/Leave Notifications**: Send join and leave messages to a Discord channel as embeds with the player skin avatar. 🖼️
 - **Server Start/Stop Notifications**: Send server start and stop messages to a Discord channel as embeds. 🚀
 - **Command Execution**: Execute Minecraft commands from Discord with proper permissions. 🛠️
 - **HTTP Server**: Receive messages and commands from Discord via HTTP requests. 🌐
@@ -46,5 +46,6 @@
 
 ## 🙏 Acknowledgements
 - [Fabric](https://fabricmc.net/) for the Minecraft modding framework.
+- [Mineatar](https://api.mineatar.io/) for providing player skin-api
 
 ### For any questions or issues, please open an issue on this repository. I'm here to help!

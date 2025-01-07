@@ -24,8 +24,13 @@ public class DiscordBot {
      * @param description The description of the embed.
      * @param color The color of the embed.
      */
-    public static void sendEmbed(String title, String description, int color) {
-        String jsonPayload = "{ \"embeds\": [{ \"title\": \"" + title + "\", \"description\": \"" + description + "\", \"color\": " + color + " }] }";
+    public static void sendEmbed(String title, String description, int color, String avatarUrl) {
+        String jsonPayload = "{ \"embeds\": [{ " +
+                "\"title\": \"" + title + "\"," +
+                "\"description\": \"" + description + "\"," +
+                "\"color\": " + color + "," +
+                "\"thumbnail\": { \"url\": \"" + avatarUrl + "\" }" +
+                "}] }";
         sendPayload(jsonPayload);
     }
 
