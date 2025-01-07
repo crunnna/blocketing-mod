@@ -15,6 +15,8 @@ public class Blocketing implements ModInitializer {
 
 		// Registers the server start event
 		ServerLifecycleEvents.SERVER_STARTED.register(this::onServerStart);
+		// Registers the server stop event
+		ServerLifecycleEvents.SERVER_STOPPED.register(this::onServerStop);
 
 		// Registers the chat handler
 		ChatHandlerMinecraft.register();
@@ -29,6 +31,16 @@ public class Blocketing implements ModInitializer {
 	 */
 	private void onServerStart(MinecraftServer minecraftServer) {
 		System.out.println("Server has started. Starting Discord HTTP server...");
-		HttpMinecraftServer.startServer(minecraftServer);
+		ChatHandlerMinecraft.sendServerStartMessage();
+	}
+
+	/**
+	 * This method is called when the server stops.
+	 *
+	 * @param minecraftServer The Minecraft server.
+	 */
+	private void onServerStop(MinecraftServer minecraftServer) {
+		System.out.println("Server has stopped. Stopping Discord HTTP server...");
+		ChatHandlerMinecraft.sendServerStopMessage();
 	}
 }
