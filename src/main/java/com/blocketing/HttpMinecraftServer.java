@@ -27,12 +27,6 @@ public class HttpMinecraftServer {
             server.setExecutor(null);
             server.start();
             System.out.println("DiscordHandler listening on port " + port);
-
-            // Sends a message to the Discord-Bot when the server starts
-            //ChatHandlerMinecraft.sendServerStartMessage();
-
-            // Sends a message to the Discord-Bot when the server stops
-            //Runtime.getRuntime().addShutdownHook(new Thread(ChatHandlerMinecraft::sendServerStopMessage));
         } catch (Exception e) {
             e.printStackTrace();
         }
