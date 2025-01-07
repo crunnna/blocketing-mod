@@ -16,6 +16,7 @@
 ## 🔨 Before using this mod
 ### 🤖 Discord Bot:
 - Before using this mod, you need to create a Discord bot. You can follow a YouTube video for guidance on how to create a Discord bot.
+- Additionally, you must also configure and run your bot from the [Blocketing Bot](#-related-repositories) repository.
 
 ### 🔧Open a Port:
 - To open a port on your Minecraft server, you can watch a YouTube video that explains the process depending on whether you are hosting locally or with a provider.
@@ -46,6 +47,6 @@
 
 ## 🙏 Acknowledgements
 - [Fabric](https://fabricmc.net/) for the Minecraft modding framework.
-- [Mineatar](https://api.mineatar.io/) for providing player skin-api
+- [Mineatar](https://mineatar.io/) for providing player skin-api
 
 ### For any questions or issues, please open an issue on this repository. I'm here to help!
