@@ -89,9 +89,9 @@ public class ChatHandlerMinecraft {
     /**
      * Sends a message to Discord-Bot when the server starts.
      */
-    public static void sendServerStartMessage() {
+    public static void sendServerStartMessage(String serverName) {
         String placeholderUrl = "https://example.com/placeholder.png";
-        DiscordBot.sendEmbed("Server Started", "The Minecraft server has started.", 0x800080, placeholderUrl); // Purple colored embed
+        DiscordBot.sendEmbed("Server Started", "The Minecraft server **" + serverName + "** has started.", 0x800080, placeholderUrl); // Purple colored embed
     }
 
     /**

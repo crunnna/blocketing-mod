@@ -32,7 +32,7 @@ public class Blocketing implements ModInitializer {
 	private void onServerStart(MinecraftServer minecraftServer) {
 		System.out.println("Server has started. Starting Discord HTTP server...");
 		HttpMinecraftServer.startServer(minecraftServer); // Starts the HTTP server
-		ChatHandlerMinecraft.sendServerStartMessage(); // Sends a message to the Discord-Bot
+		ChatHandlerMinecraft.sendServerStartMessage(minecraftServer.getServerMotd()); // Sends a server start message to the Discord-Bot
 	}
 
 	/**
@@ -42,6 +42,6 @@ public class Blocketing implements ModInitializer {
 	 */
 	private void onServerStop(MinecraftServer minecraftServer) {
 		System.out.println("Server has stopped. Stopping Discord HTTP server...");
-		ChatHandlerMinecraft.sendServerStopMessage(); // Sends a message to the Discord-Bot
+		ChatHandlerMinecraft.sendServerStopMessage(); // Sends a server stop message to the Discord-Bot
 	}
 }
