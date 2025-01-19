@@ -1,4 +1,5 @@
 <div align="center">
+    <img src="src/main/resources/blocketing.jpeg" alt="Blocketing Logo" width="300" height="300">
   <h1 align="center">Blocketing Fabric Mod</h1>
   <h3>Integrate Discord with Minecraft for seamless communication and command execution</h3>
 </div>
