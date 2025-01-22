@@ -13,6 +13,7 @@
 - **Server Start/Stop Notifications**: Send server start and stop messages to a Discord channel as embeds. 🚀
 - **Command Execution**: Execute Minecraft commands from Discord with proper permissions. 🛠️
 - **HTTP Server**: Receive messages and commands from Discord via HTTP requests. 🌐
+- **In-Game Configuration**: Configure bot token, channel ID, and port directly from in-game commands. 🎮
 
 ## 🔨 Before using this mod
 ### 🤖 Discord Bot:
@@ -24,29 +25,26 @@
 
 ## ⚡ Getting Started
 > [!IMPORTANT]
-> To set up your Blocketing Mod, begin by cloning the repository and building the project. Once built, create a `config.properties` file in the `src/main/resources` directory and add your configuration.
-> ```sh
-> git clone https://github.com/crunnna/blocketing-fabric-mod.git
-> cd blocketing-fabric-mod/
-> ./gradlew build
-> ```
-> Add your configuration to the config.properties file:
-> ```env
-> BOT_TOKEN=your_discord_bot_token
-> CHANNEL_ID=your_discord_channel_id
-> PORT=your_http_server_mineraft_port
-> ```
+> To set up your Blocketing Mod, download the latest release from the [releases page] () and add it to your Minecraft server's `mods` folder.
 
 ## 🚀 Usage
 > ### Running the Mod
 > To run the mod, start your Minecraft server with the mod installed. The mod will log in to Discord and start listening for messages and commands.
 
-## 🌐 Environment Variables
+> ### In-Game Configuration Commands
+> You can configure the bot token, channel ID, and port directly from in-game using the following commands:
+> ```sh
+> /blocketing token <your_discord_bot_token>
+> /blocketing channel <your_discord_channel_id>
+> /blocketing port <your_http_server_minecraft_port>
+> ```
+
+## :globe_with_meridians: Environment Variables
 - `BOT_TOKEN`: The token of the Discord bot.
 - `CHANNEL_ID`: The ID of the Discord channel.
 - `PORT`: The port number for the HTTP server.
 
-## 🙏 Acknowledgements
+## :pray: Acknowledgements
 - [Fabric](https://fabricmc.net/) for the Minecraft modding framework.
 - [Mineatar](https://mineatar.io/) for providing player skin-api
 
