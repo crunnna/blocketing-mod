@@ -7,9 +7,6 @@ import java.net.URL;
 
 public class DiscordBot {
 
-    private static final String BOT_TOKEN = ConfigLoader.getProperty("BOT_TOKEN");
-    private static final String CHANNEL_ID = ConfigLoader.getProperty("CHANNEL_ID");
-
     /**
      * Sends a plain text message to the Discord channel.
      * @param message The message to send.
@@ -40,17 +37,20 @@ public class DiscordBot {
      */
     private static void sendPayload(String jsonPayload) {
         try {
-            if (BOT_TOKEN == null || CHANNEL_ID == null) {
+            String botToken = ConfigLoader.getProperty("BOT_TOKEN");
+            String channelId = ConfigLoader.getProperty("CHANNEL_ID");
+
+            if (botToken == null || channelId == null) {
                 System.err.println("Bot token or channel ID is not set. Message cannot be sent.");
                 return;
             }
 
-            URI uri = new URI("https", "discord.com", "/api/v10/channels/" + CHANNEL_ID + "/messages", null);
+            URI uri = new URI("https", "discord.com", "/api/v10/channels/" + channelId + "/messages", null);
             URL url = uri.toURL();
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
-            connection.setRequestProperty("Authorization", "Bot " + BOT_TOKEN);
+            connection.setRequestProperty("Authorization", "Bot " + botToken);
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setDoOutput(true);
 
