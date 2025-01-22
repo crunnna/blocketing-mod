@@ -1,25 +1,39 @@
 package com.blocketing;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 // This class would be responsible for loading the configuration file 'config.properties'.
 public class ConfigLoader {
 
     private static final Properties config = new Properties();
+    private static final String CONFIG_PATH = "config/blocketing.properties";
+
     static { loadConfig(); }
 
     /**
-     * Loads the configuration from the 'config.properties' file.
+     * Loads the configuration from the 'blocketing.properties' file.
      */
     private static void loadConfig() {
-        try (InputStream input = ConfigLoader.class.getClassLoader().getResourceAsStream("config.properties")) {
-            if (input == null) {
-                System.err.println("The configuration file 'config.properties' was not found!");
-                return;
+        try {
+            // Checks whether the ‘config’ directory exists and creates it if necessary
+            if (!Files.exists(Paths.get("config"))) {
+                Files.createDirectories(Paths.get("config"));
+                System.out.println("Configuration directory created at config");
             }
-            config.load(input);
+            // Checks whether the configuration file exists and creates it if necessary
+            if (!Files.exists(Paths.get(CONFIG_PATH))) {
+                Files.createFile(Paths.get(CONFIG_PATH));
+                System.out.println("Configuration file created at " + CONFIG_PATH);
+            }
+            // Loads the configuration file
+            try (InputStream input = Files.newInputStream(Paths.get(CONFIG_PATH))) {
+                config.load(input);
+            }
         } catch (IOException e) {
             System.err.println("Error loading the configuration file: " + e.getMessage());
         }
@@ -47,6 +61,28 @@ public class ConfigLoader {
         } catch (NumberFormatException e) {
             System.err.println("Invalid integer for key: " + key);
             return -1;
+        }
+    }
+
+    /**
+     * Sets the property value for the given key.
+     *
+     * @param key The key to set the value for.
+     * @param value The value to set.
+     */
+    public static void setProperty(String key, String value) {
+        config.setProperty(key, value);
+        saveConfig();
+    }
+
+    /**
+     * Saves the configuration to the 'blocketing.properties' file.
+     */
+    private static void saveConfig() {
+        try (FileOutputStream output = new FileOutputStream(CONFIG_PATH)) {
+            config.store(output, null);
+        } catch (IOException e) {
+            System.err.println("Error saving the configuration file: " + e.getMessage());
         }
     }
 }

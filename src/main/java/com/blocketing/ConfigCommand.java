@@ -1,0 +1,55 @@
+package com.blocketing;
+
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
+import net.minecraft.server.command.CommandManager;
+import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.text.Text;
+
+// This class would be responsible for the registration and execution of configuration commands.
+public class ConfigCommand {
+
+    /**
+     * Registers the configuration command.
+     *
+     * @param dispatcher The dispatcher where the commands are registered.
+     */
+    public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
+        dispatcher.register(CommandManager.literal("blocketing")
+                .then(CommandManager.literal("port")
+                        .then(CommandManager.argument("port", IntegerArgumentType.integer())
+                                .executes(context -> {
+                                    // Sets the port in the configuration
+                                    int port = IntegerArgumentType.getInteger(context, "port");
+                                    ConfigLoader.setProperty("PORT", String.valueOf(port));
+                                    context.getSource().sendFeedback(() -> Text.of("Port set to " + port), false);
+                                    return 1;
+                                })
+                        )
+                )
+                .then(CommandManager.literal("token")
+                        .then(CommandManager.argument("token", StringArgumentType.string())
+                                .executes(context -> {
+                                    // Sets the bot token in the configuration
+                                    String token = StringArgumentType.getString(context, "token");
+                                    ConfigLoader.setProperty("BOT_TOKEN", token);
+                                    context.getSource().sendFeedback(() -> Text.of("Bot token set"), false);
+                                    return 1;
+                                })
+                        )
+                )
+                .then(CommandManager.literal("channel")
+                        .then(CommandManager.argument("channel", StringArgumentType.string())
+                                .executes(context -> {
+                                    // Sets the channel ID in the configuration
+                                    String channel = StringArgumentType.getString(context, "channel");
+                                    ConfigLoader.setProperty("CHANNEL_ID", channel);
+                                    context.getSource().sendFeedback(() -> Text.of("Channel ID set"), false);
+                                    return 1;
+                                })
+                        )
+                )
+        );
+    }
+}
