@@ -8,12 +8,12 @@
 - [Blocketing Bot](https://github.com/crunnna/blocketing-bot): A Discord bot for seamless communication between a Discord channel and a Minecraft server, enabling bidirectional message synchronization.
 
 ## ✨ Features
-- **Message Relay**: Send messages from a specific Discord channel to a Minecraft server. 💬
-- **Join/Leave Notifications**: Send join and leave messages to a Discord channel as embeds with the player skin avatar. 🖼️
-- **Server Start/Stop Notifications**: Send server start and stop messages to a Discord channel as embeds. 🚀
-- **Command Execution**: Execute Minecraft commands from Discord with proper permissions. 🛠️
-- **HTTP Server**: Receive messages and commands from Discord via HTTP requests. 🌐
-- **In-Game Configuration**: Configure bot token, channel ID, and port directly from in-game commands. 🎮
+- [x] **Message Relay**: Send messages from a specific Discord channel to a Minecraft server. 💬
+- [x] **Join/Leave Notifications**: Send join and leave messages to a Discord channel as embeds with the player skin avatar. 🖼️
+- [x] **Server Start/Stop Notifications**: Send server start and stop messages to a Discord channel as embeds. 🚀
+- [x] **Command Execution**: Execute Minecraft commands from Discord with proper permissions. 🛠️
+- [x] **HTTP Server**: Receive messages and commands from Discord via HTTP requests. 🌐
+- [x] **In-Game Configuration**: Configure bot token, channel ID, and port directly from in-game commands. 🎮
 
 ## 🔨 Before using this mod
 ### 🤖 Discord Bot:

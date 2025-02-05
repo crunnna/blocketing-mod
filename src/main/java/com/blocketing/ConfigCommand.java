@@ -50,6 +50,17 @@ public class ConfigCommand {
                                 })
                         )
                 )
+                .then(CommandManager.literal("toggle")
+                        .then(CommandManager.literal("advancements")
+                                .executes(context -> {
+                                    // Toggles the advancementsEnabled flag
+                                    ChatHandlerMinecraft.toggleAdvancementsEnabled();
+                                    boolean status = ChatHandlerMinecraft.isAdvancementsEnabled();
+                                    context.getSource().sendFeedback(() -> Text.of("Advancements " + (status ? "enabled" : "disabled")), false);
+                                    return 1;
+                                })
+                        )
+                )
         );
     }
 }

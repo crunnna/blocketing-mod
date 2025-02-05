@@ -65,6 +65,18 @@ public class ConfigLoader {
     }
 
     /**
+     * Gets the property value as a boolean for the given key.
+     *
+     * @param key The key to retrieve the value for.
+     * @param defaultValue The default value to return if the key is not found.
+     * @return The boolean value of the key, or the default value if not found.
+     */
+    public static boolean getBooleanProperty(String key, boolean defaultValue) {
+        String value = config.getProperty(key);
+        return value != null ? Boolean.parseBoolean(value) : defaultValue;
+    }
+
+    /**
      * Sets the property value for the given key.
      *
      * @param key The key to set the value for.
