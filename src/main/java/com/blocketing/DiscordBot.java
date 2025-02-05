@@ -22,13 +22,17 @@ public class DiscordBot {
      * @param color The color of the embed.
      */
     public static void sendEmbed(String title, String description, int color, String avatarUrl) {
-        String jsonPayload = "{ \"embeds\": [{ " +
+        StringBuilder jsonPayload = new StringBuilder("{ \"embeds\": [{ " +
                 "\"title\": \"" + title + "\"," +
                 "\"description\": \"" + description + "\"," +
-                "\"color\": " + color + "," +
-                "\"thumbnail\": { \"url\": \"" + avatarUrl + "\" }" +
-                "}] }";
-        sendPayload(jsonPayload);
+                "\"color\": " + color);
+
+        if (avatarUrl != null) {
+            jsonPayload.append(", \"thumbnail\": { \"url\": \"").append(avatarUrl).append("\" }");
+        }
+
+        jsonPayload.append("}] }");
+        sendPayload(jsonPayload.toString());
     }
 
     /**
