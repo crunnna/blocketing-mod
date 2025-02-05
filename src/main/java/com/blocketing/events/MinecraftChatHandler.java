@@ -83,7 +83,11 @@ public class MinecraftChatHandler {
     public static void sendAdvancementMessage(Text message, boolean overlay) {
         if (advancementsEnabled && message.getString().contains("has made the advancement")) {
             String advancementMessage = message.getString();
-            DiscordBot.sendEmbed("Advancement Made", advancementMessage, 0x9300FF, null);
+            int playerNameEndIndex = advancementMessage.indexOf(" has made the advancement");
+            String playerName = advancementMessage.substring(0, playerNameEndIndex).trim();
+            String advancement = advancementMessage.substring(playerNameEndIndex + " has made the advancement ".length()).trim();
+            String formattedMessage = "**" + playerName + "** has made the advancement **" + advancement + "**";
+            DiscordBot.sendEmbed("Advancement Made", formattedMessage, 0x9300FF, null);
         }
     }
 
