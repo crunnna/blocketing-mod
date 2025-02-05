@@ -15,7 +15,7 @@ import net.fabricmc.fabric.api.networking.v1.PacketSender;
  */
 public class ChatHandlerMinecraft {
 
-    private static boolean advancementsEnabled = true;
+    private static boolean advancementsEnabled = ConfigLoader.getBooleanProperty("ADVANCEMENTS_ENABLED", true);
 
     /**
      * Registers the event handlers for chat messages, player join, and player disconnect events.
@@ -132,6 +132,7 @@ public class ChatHandlerMinecraft {
      */
     public static void toggleAdvancementsEnabled() {
         advancementsEnabled = !advancementsEnabled;
+        ConfigLoader.setProperty("ADVANCEMENTS_ENABLED", String.valueOf(advancementsEnabled));
     }
 
     /**
