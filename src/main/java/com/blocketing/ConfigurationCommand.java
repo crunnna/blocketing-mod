@@ -1,5 +1,7 @@
 package com.blocketing;
 
+import com.blocketing.config.ConfigLoader;
+import com.blocketing.events.MinecraftChatHandler;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
@@ -7,8 +9,10 @@ import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 
-// This class would be responsible for the registration and execution of configuration commands.
-public class ConfigCommand {
+/**
+ * This class would be responsible for the registration and execution of ingame blocketing-mod configuration commands.
+ */
+public class ConfigurationCommand {
 
     /**
      * Registers the configuration command.
@@ -54,8 +58,8 @@ public class ConfigCommand {
                         .then(CommandManager.literal("advancements")
                                 .executes(context -> {
                                     // Toggles the advancementsEnabled flag
-                                    ChatHandlerMinecraft.toggleAdvancementsEnabled();
-                                    boolean status = ChatHandlerMinecraft.isAdvancementsEnabled();
+                                    MinecraftChatHandler.toggleAdvancementsEnabled();
+                                    boolean status = MinecraftChatHandler.isAdvancementsEnabled();
                                     context.getSource().sendFeedback(() -> Text.of("Advancements " + (status ? "enabled" : "disabled")), false);
                                     return 1;
                                 })
