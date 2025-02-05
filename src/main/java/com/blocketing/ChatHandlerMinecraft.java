@@ -29,7 +29,6 @@ public class ChatHandlerMinecraft {
 
     /**
      * This method is called when a chat message is sent.
-     *
      * @param message The chat message.
      * @param sender The player who sent the message.
      * @param parameters The parameters of the message.
@@ -38,28 +37,17 @@ public class ChatHandlerMinecraft {
         String playerName = sender.getGameProfile().getName();
         String chatMessage = message.getContent().getString();
 
-        sendToDiscordBot(playerName, chatMessage);
-    }
-
-    /**
-     * Sends the chat message to the Discord-Bot.
-     * @param playerName The name of the player who sent the message.
-     * @param chatMessage The chat message.
-     */
-    private static void sendToDiscordBot(String playerName, String chatMessage) {
         DiscordBot.sendMessage("**[" + playerName + "]** " + chatMessage);
     }
 
     /**
-     * Sends a message to all players in the Minecraft chat.
-     * @param minecraftServer The Minecraft server.
-     * @param username The username to mention in the message.
-     * @param content The content of the message.
+     * Handles game messages.
+     * @param server The Minecraft server.
+     * @param message The game message.
+     * @param overlay Whether the message should overlay the previous message.
      */
-    public static void sendMessageToAllPlayers(MinecraftServer minecraftServer, String username, String content) {
-        for (ServerPlayerEntity player : minecraftServer.getPlayerManager().getPlayerList()) {
-            player.sendMessage(Text.of("<@DC_" + username + "> " + content), false);
-        }
+    public static void onGameMessage(MinecraftServer server, Text message, boolean overlay) {
+        sendAdvancementMessage(message, overlay);
     }
 
     /**
@@ -90,6 +78,18 @@ public class ChatHandlerMinecraft {
     }
 
     /**
+     * Sends a message to all players in the Minecraft chat.
+     * @param minecraftServer The Minecraft server.
+     * @param username The username to mention in the message.
+     * @param content The content of the message.
+     */
+    public static void sendMessageToAllPlayers(MinecraftServer minecraftServer, String username, String content) {
+        for (ServerPlayerEntity player : minecraftServer.getPlayerManager().getPlayerList()) {
+            player.sendMessage(Text.of("<@DC_" + username + "> " + content), false);
+        }
+    }
+
+    /**
      * Sends a message to Discord-Bot when the server starts.
      */
     public static void sendServerStartMessage(String serverName) {
@@ -103,16 +103,6 @@ public class ChatHandlerMinecraft {
     public static void sendServerStopMessage() {
         String placeholderUrl = "https://example.com/placeholder.png";
         DiscordBot.sendEmbed("Server Stopped", "The Minecraft server has stopped.", 0x40E0D0, placeholderUrl); // Turquoise colored embed
-    }
-
-    /**
-     * Handles game messages.
-     * @param server The Minecraft server.
-     * @param message The game message.
-     * @param overlay Whether the message should overlay the previous message.
-     */
-    public static void onGameMessage(MinecraftServer server, Text message, boolean overlay) {
-        sendAdvancementMessage(message, overlay);
     }
 
     /**
