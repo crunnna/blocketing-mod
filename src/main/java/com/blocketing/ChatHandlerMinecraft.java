@@ -15,6 +15,8 @@ import net.fabricmc.fabric.api.networking.v1.PacketSender;
  */
 public class ChatHandlerMinecraft {
 
+    private static boolean advancementsEnabled = true;
+
     /**
      * Registers the event handlers for chat messages, player join, and player disconnect events.
      */
@@ -22,6 +24,7 @@ public class ChatHandlerMinecraft {
         ServerMessageEvents.CHAT_MESSAGE.register(ChatHandlerMinecraft::onChatMessage);
         ServerPlayConnectionEvents.JOIN.register(ChatHandlerMinecraft::onPlayerJoin);
         ServerPlayConnectionEvents.DISCONNECT.register(ChatHandlerMinecraft::onPlayerDisconnect);
+        ServerMessageEvents.GAME_MESSAGE.register(ChatHandlerMinecraft::onGameMessage);
     }
 
     /**
@@ -100,5 +103,42 @@ public class ChatHandlerMinecraft {
     public static void sendServerStopMessage() {
         String placeholderUrl = "https://example.com/placeholder.png";
         DiscordBot.sendEmbed("Server Stopped", "The Minecraft server has stopped.", 0x40E0D0, placeholderUrl); // Turquoise colored embed
+    }
+
+    /**
+     * Handles game messages.
+     * @param server The Minecraft server.
+     * @param message The game message.
+     * @param overlay Whether the message should overlay the previous message.
+     */
+    public static void onGameMessage(MinecraftServer server, Text message, boolean overlay) {
+        sendAdvancementMessage(message, overlay);
+    }
+
+    /**
+     * Sends a message to Discord-Bot when an advancement is made.
+     * @param message The message to send.
+     * @param overlay Whether the message should overlay the previous message.
+     */
+    public static void sendAdvancementMessage(Text message, boolean overlay) {
+        if (advancementsEnabled && message.getString().contains("has made the advancement")) {
+            String advancementMessage = message.getString();
+            DiscordBot.sendEmbed("Advancement Made", advancementMessage, 0x9300FF, null);
+        }
+    }
+
+    /**
+     * Toggles the advancementsEnabled flag.
+     */
+    public static void toggleAdvancementsEnabled() {
+        advancementsEnabled = !advancementsEnabled;
+    }
+
+    /**
+     * Gets the status of the advancementsEnabled flag.
+     * @return The status of the advancementsEnabled flag.
+     */
+    public static boolean isAdvancementsEnabled() {
+        return advancementsEnabled;
     }
 }
