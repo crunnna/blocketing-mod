@@ -87,7 +87,7 @@ public class MinecraftChatHandler {
             String playerName = advancementMessage.substring(0, playerNameEndIndex).trim();
             String advancement = advancementMessage.substring(playerNameEndIndex + " has made the advancement ".length()).trim();
             String formattedMessage = "**" + playerName + "** has made the advancement **" + advancement + "**";
-            DiscordBot.sendEmbed("Advancement Made", formattedMessage, 0x9300FF, null);
+            DiscordBot.sendEmbed("Advancement Made", formattedMessage, 0x77DD77, null);
         }
     }
 
