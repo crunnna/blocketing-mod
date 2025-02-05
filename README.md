@@ -7,45 +7,52 @@
 ## 🔗 Related Repositories
 - [Blocketing Bot](https://github.com/crunnna/blocketing-bot): A Discord bot for seamless communication between a Discord channel and a Minecraft server, enabling bidirectional message synchronization.
 
+---
+
 ## ✨ Features
-- [x] **Message Relay**: Send messages from a specific Discord channel to a Minecraft server. 💬
-- [x] **Join/Leave Notifications**: Send join and leave messages to a Discord channel as embeds with the player skin avatar. 🖼️
-- [x] **Server Start/Stop Notifications**: Send server start and stop messages to a Discord channel as embeds. 🚀
-- [x] **Command Execution**: Execute Minecraft commands from Discord with proper permissions. 🛠️
-- [x] **HTTP Server**: Receive messages and commands from Discord via HTTP requests. 🌐
-- [x] **In-Game Configuration**: Configure bot token, channel ID, and port directly from in-game commands. 🎮
+- ✅ **Message Relay**: Sync messages between a Minecraft server and a Discord channel. 💬
+- ✅ **Join/Leave Notifications**: Send join and leave messages to Discord with player avatars. 🖼️
+- ✅ **Server Start/Stop Notifications**: Notify Discord when the server starts or stops. 🚀
+- ✅ **Advancement Messages**: Toggle the sending of advancement messages to Discord. 🏆
+- ✅ **Command Execution**: Execute Minecraft commands from Discord (with permissions). 🛠️
+- ✅ **In-Game Configuration**: Configure bot token, channel ID, and port directly from in-game commands. 🎮
+
+---
 
 ## 🔨 Before using this mod
-### 🤖 Discord Bot:
-- Before using this mod, you need to create a Discord bot. You can follow a YouTube video for guidance on how to create a Discord bot.
-- Additionally, you must also configure and run your bot from the [Blocketing Bot](#-related-repositories) repository.
+### 🤖 Setting Up the Discord Bot:
+- **Create a new Discord bot** (Follow a YouTube guide on how to create a Discord bot.)
+- Configure and run the bot from the **[Blocketing Bot](#-related-repositories) repository**.
 
-### 🔧Open a Port:
-- To open a port on your Minecraft server, you can watch a YouTube video that explains the process depending on whether you are hosting locally or with a provider.
+### 🔧 Opening a Port:
+- Ensure your **Minecraft server** allows incoming HTTP requests.
+- Follow a Youtube guide based on your hosting provider to open a port.
 
-## ⚡ Getting Started
+---
+
+## 🚀 Installation
 > [!IMPORTANT]
-> To set up your Blocketing Mod, download the latest release from the [releases page] () and add it to your Minecraft server's `mods` folder.
+1️⃣ **Download the latest release** from the [Releases Page](#) (link missing).  
+2️⃣ **Place the `.jar` file in your server’s `mods/` folder**.  
+3️⃣ **Start your Minecraft server** with Fabric installed.  
+4️⃣ **Configure the bot** using the in-game commands (see below).  
+5️⃣ The mod will log in to Discord and start listening for messages and commands.
 
-## 🚀 Usage
-> ### Running the Mod
-> To run the mod, start your Minecraft server with the mod installed. The mod will log in to Discord and start listening for messages and commands.
+---
 
-> ### In-Game Configuration Commands
-> You can configure the bot token, channel ID, and port directly from in-game using the following commands:
+## ⚙️ Configuration Commands
+### 🎮 In-Game Setup
 > ```sh
-> /blocketing token <your_discord_bot_token>
-> /blocketing channel <your_discord_channel_id>
-> /blocketing port <your_http_server_minecraft_port>
+> /blocketing setup token <your_discord_bot_token>
+> /blocketing setup channel <your_discord_channel_id>
+> /blocketing setup port <your_http_server_minecraft_port>
 > ```
 
-## :globe_with_meridians: Environment Variables
-- `BOT_TOKEN`: The token of the Discord bot.
-- `CHANNEL_ID`: The ID of the Discord channel.
-- `PORT`: The port number for the HTTP server.
+### 🔄 Toggle Features
+> ```sh
+> /blocketing toggle advancements # Toggle the sending of advancements to Discord.
+> ```
 
-## :pray: Acknowledgements
-- [Fabric](https://fabricmc.net/) for the Minecraft modding framework.
-- [Mineatar](https://mineatar.io/) for providing player skin-api
+---
 
-### For any questions or issues, please open an issue on this repository. I'm here to help!
+### 📌 Need help? Feel free to ask questions or open an issue!
