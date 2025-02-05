@@ -1,5 +1,6 @@
-package com.blocketing;
+package com.blocketing.discord;
 
+import com.blocketing.events.MinecraftChatHandler;
 import com.google.gson.JsonObject;
 import com.mojang.brigadier.ParseResults;
 import com.sun.net.httpserver.HttpExchange;
@@ -13,7 +14,7 @@ import java.util.stream.Collectors;
 /**
  * This class would be responsible for receiving messages from Discord and then forwarding them to the Minecraft chat.
  */
-public class ChatHandlerDiscord {
+public class DiscordMessageHandler {
 
     /**
      * This method is called when a message is received from Discord.
@@ -32,7 +33,7 @@ public class ChatHandlerDiscord {
                 String content = json.get("content").getAsString();
 
                 // Sends the message to all players in the Minecraft chat
-                ChatHandlerMinecraft.sendMessageToAllPlayers(minecraftServer, username, content);
+                MinecraftChatHandler.sendMessageToAllPlayers(minecraftServer, username, content);
 
                 // Returns an HTTP response
                 String response = "Message received";

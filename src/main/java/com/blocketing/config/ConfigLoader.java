@@ -1,4 +1,4 @@
-package com.blocketing;
+package com.blocketing.config;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -7,7 +7,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Properties;
 
-// This class would be responsible for loading the configuration file 'config.properties'.
+/**
+ * This class would be responsible for loading and saving the configuration for the blocketing-mod.
+ */
 public class ConfigLoader {
 
     private static final Properties config = new Properties();

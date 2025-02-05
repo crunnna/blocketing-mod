@@ -1,19 +1,18 @@
-package com.blocketing;
+package com.blocketing.events;
 
+import com.blocketing.config.ConfigLoader;
+import com.blocketing.discord.DiscordBot;
 import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.network.message.MessageType;
 import net.minecraft.network.message.SignedMessage;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
 
 /**
  * This class would be responsible for monitoring Minecraft chat messages and sending them to Discord.
  */
-public class ChatHandlerMinecraft {
+public class MinecraftChatHandler {
 
     private static boolean advancementsEnabled = ConfigLoader.getBooleanProperty("ADVANCEMENTS_ENABLED", true);
 
@@ -21,10 +20,8 @@ public class ChatHandlerMinecraft {
      * Registers the event handlers for chat messages, player join, and player disconnect events.
      */
     public static void register() {
-        ServerMessageEvents.CHAT_MESSAGE.register(ChatHandlerMinecraft::onChatMessage);
-        ServerPlayConnectionEvents.JOIN.register(ChatHandlerMinecraft::onPlayerJoin);
-        ServerPlayConnectionEvents.DISCONNECT.register(ChatHandlerMinecraft::onPlayerDisconnect);
-        ServerMessageEvents.GAME_MESSAGE.register(ChatHandlerMinecraft::onGameMessage);
+        ServerMessageEvents.CHAT_MESSAGE.register(MinecraftChatHandler::onChatMessage);
+        ServerMessageEvents.GAME_MESSAGE.register(MinecraftChatHandler::onGameMessage);
     }
 
     /**
@@ -48,33 +45,6 @@ public class ChatHandlerMinecraft {
      */
     public static void onGameMessage(MinecraftServer server, Text message, boolean overlay) {
         sendAdvancementMessage(message, overlay);
-    }
-
-    /**
-     * Handles player join events.
-     * @param handler The network handler for the player.
-     * @param sender The packet sender.
-     * @param server The Minecraft server.
-     */
-    private static void onPlayerJoin(ServerPlayNetworkHandler handler, PacketSender sender, MinecraftServer server) {
-        String playerName = handler.getPlayer().getGameProfile().getName();
-        String playerUUID = handler.getPlayer().getUuid().toString();
-        String avatarUrl = "https://api.mineatar.io/face/" + playerUUID + "?scale=8"; // Get the player's avatar    (scale= (4=mini, 8=normal, 12=big))
-
-        DiscordBot.sendEmbed("Player Joined", "**" + playerName + "** joined the server.", 0x00FF00, avatarUrl); // Green colored embed
-    }
-
-    /**
-     * Handles player disconnect events.
-     * @param handler The network handler for the player.
-     * @param server The Minecraft server.
-     */
-    private static void onPlayerDisconnect(ServerPlayNetworkHandler handler, MinecraftServer server) {
-        String playerName = handler.getPlayer().getGameProfile().getName();
-        String playerUUID = handler.getPlayer().getUuid().toString();
-        String avatarUrl = "https://api.mineatar.io/face/" + playerUUID + "?scale=8"; // Get the player's avatar    (scale= (4=mini, 8=normal, 12=big))
-
-        DiscordBot.sendEmbed("Player Left", "**" + playerName + "** left the server.", 0xFF0000, avatarUrl); // Red colored embed
     }
 
     /**

@@ -1,10 +1,15 @@
-package com.blocketing;
+package com.blocketing.discord;
+
+import com.blocketing.config.ConfigLoader;
 
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 
+/**
+ * This class would be responsible for sending messages to Discord using a Discord bot.
+ */
 public class DiscordBot {
 
     /**
