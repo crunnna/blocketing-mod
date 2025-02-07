@@ -32,7 +32,7 @@
 
 ## 🚀 Installation
 > [!IMPORTANT]
-1️⃣ **Download the latest release** from the [Releases Page](#) (link missing).  
+1️⃣ **Download the latest release** from the [Releases Page](https://github.com/crunnna/blocketing-fabric-mod/releases).  
 2️⃣ **Place the `.jar` file in your server’s `mods/` folder**.  
 3️⃣ **Start your Minecraft server** with Fabric installed.  
 4️⃣ **Configure the bot** using the in-game commands (see below).  
