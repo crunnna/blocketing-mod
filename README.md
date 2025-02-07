@@ -14,6 +14,7 @@
 - ✅ **Join/Leave Notifications**: Send join and leave messages to Discord with player avatars. 🖼️
 - ✅ **Server Start/Stop Notifications**: Notify Discord when the server starts or stops. 🚀
 - ✅ **Advancement Messages**: Toggle the sending of advancement messages to Discord. 🏆
+- ✅ **Death Messages**: Toggle the sending of death messages to Discord. 💀
 - ✅ **Command Execution**: Execute Minecraft commands from Discord (with permissions). 🛠️
 - ✅ **In-Game Configuration**: Configure bot token, channel ID, and port directly from in-game commands. 🎮
 
@@ -50,7 +51,8 @@
 
 ### 🔄 Toggle Features
 > ```sh
-> /blocketing toggle advancements # Toggle the sending of advancements to Discord.
+> /blocketing toggle advancements   # Toggle the sending of advancements to Discord.
+> /blocketing toggle deaths   # Toggle the sending of death messages to Discord.
 > ```
 
 ---
