@@ -15,6 +15,7 @@ import net.minecraft.text.Text;
 public class MinecraftChatHandler {
 
     private static boolean advancementsEnabled = ConfigLoader.getBooleanProperty("ADVANCEMENTS_ENABLED", true);
+    private static boolean deathsEnabled = ConfigLoader.getBooleanProperty("DEATHS_ENABLED", true);
 
     /**
      * Registers the event handlers for chat messages, player join, and player disconnect events.
@@ -44,6 +45,13 @@ public class MinecraftChatHandler {
      * @param overlay Whether the message should overlay the previous message.
      */
     public static void onGameMessage(MinecraftServer server, Text message, boolean overlay) {
+        String messageContent = message.getString();
+        System.out.println("DEBUG: onGameMessage was called! Message: " + messageContent); // Debug log
+
+        if (deathsEnabled && messageContent.contains("fell")) {
+            DiscordBot.sendEmbed("Player Death", messageContent, 0x000000, null);
+        }
+
         sendAdvancementMessage(message, overlay);
     }
 
@@ -105,5 +113,21 @@ public class MinecraftChatHandler {
      */
     public static boolean isAdvancementsEnabled() {
         return advancementsEnabled;
+    }
+
+    /**
+     * Toggles the deathsEnabled flag.
+     */
+    public static void toggleDeathsEnabled() {
+        deathsEnabled = !deathsEnabled;
+        ConfigLoader.setProperty("DEATHS_ENABLED", String.valueOf(deathsEnabled));
+    }
+
+    /**
+     * Gets the status of the deathsEnabled flag.
+     * @return The status of the deathsEnabled flag.
+     */
+    public static boolean isDeathsEnabled() {
+        return deathsEnabled;
     }
 }

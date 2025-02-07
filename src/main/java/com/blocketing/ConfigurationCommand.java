@@ -80,6 +80,18 @@ public class ConfigurationCommand {
                             context.getSource().sendFeedback(() -> Text.of("This command toggles the sending of advancement messages to Discord."), true);
                             return 1;
                         })
+                        .then(CommandManager.literal("deaths")
+                                .executes(context -> {
+                                    MinecraftChatHandler.toggleDeathsEnabled();
+                                    boolean status = MinecraftChatHandler.isDeathsEnabled();
+                                    context.getSource().sendFeedback(() -> Text.of("Deaths " + (status ? "enabled" : "disabled")), true);
+                                    return 1;
+                                })
+                        )
+                        .executes(context -> {
+                            context.getSource().sendFeedback(() -> Text.of("This command toggles the sending of death messages to Discord."), true);
+                            return 1;
+                        })
                 )
                 .executes(context -> {
                     context.getSource().sendFeedback(() -> Text.of("Available commands: setup, toggle"), true);
