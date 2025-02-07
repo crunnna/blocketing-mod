@@ -46,13 +46,13 @@ public class MinecraftChatHandler {
      */
     public static void onGameMessage(MinecraftServer server, Text message, boolean overlay) {
         String messageContent = message.getString();
-        System.out.println("DEBUG: onGameMessage was called! Message: " + messageContent); // Debug log
+        System.out.println("DEBUG: onGameMessage received: " + messageContent); // Debug log
 
-        if (deathsEnabled && messageContent.contains("fell")) {
-            DiscordBot.sendEmbed("Player Death", messageContent, 0x000000, null);
+        if (deathsEnabled && isDeathMessage(messageContent)) {
+            handleDeathMessage(messageContent);
+        } else if (advancementsEnabled && isAdvancementMessage(messageContent)) {
+            handleAdvancementMessage(messageContent);
         }
-
-        sendAdvancementMessage(message, overlay);
     }
 
     /**
@@ -84,19 +84,86 @@ public class MinecraftChatHandler {
     }
 
     /**
+     * Checks if a message is a death message.
+     * @param message The message to check.
+     * @return True if the message is a death message, false otherwise.
+     */
+    private static boolean isDeathMessage(String message) {
+        String[] deathKeywords = {
+                "died", "was slain", "fell", "was shot", "tried to swim",
+                "was blown up", "was killed", "was burnt", "hit the ground",
+                "was impaled", "was squashed", "was poked", "drowned",
+                "was pricked", "blew up", "was fireballed", "was doomed",
+                "was pricked to death", "walked into a cactus",
+                "drowned", "drowned while trying to escape",
+                "died from dehydration", "died from dehydration while trying to escape",
+                "experienced kinetic energy", "experienced kinetic energy while trying to escape",
+                "was killed by [Intentional Game Design]",
+                "hit the ground too hard", "fell from a high place", "fell off a ladder",
+                "fell off some vines", "fell off some weeping vines",
+                "fell off some twisting vines", "fell off scaffolding",
+                "fell while climbing", "fell out of the water", "was doomed to fall",
+                "was doomed to fall by", "was impaled on a stalagmite",
+                "was squashed by a falling anvil", "was squashed by a falling block",
+                "was skewered by a falling stalactite",
+                "went up in flames", "walked into fire", "burned to death",
+                "was burned to a crisp", "tried to swim in lava",
+                "tried to swim in lava to escape",
+                "was struck by lightning", "discovered the floor was lava",
+                "walked into the danger zone", "was killed by magic",
+                "was frozen to death", "was frozen to death by",
+                "was slain by", "was stung to death",
+                "was obliterated by a sonically-charged shriek",
+                "was smashed by", "was shot by", "was pummeled by",
+                "was fireballed by", "was shot by a skull from",
+                "starved to death", "suffocated in a wall",
+                "was squished too much", "was squashed by",
+                "left the confines of this world",
+                "was poked to death by a sweet berry bush",
+                "was killed while trying to hurt",
+                "was impaled by", "was skewered"
+        };
+
+        for (String keyword : deathKeywords) {
+            if (message.contains(keyword)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Handles a death message.
+     * @param message The death message.
+     */
+    private static void handleDeathMessage(String message) {
+        int playerNameEndIndex = message.indexOf(" ");
+        String playerName = message.substring(0, playerNameEndIndex).trim();
+        String deathMessage = message.substring(playerNameEndIndex).trim();
+        String formattedMessage = "**" + playerName + "** " + deathMessage;
+        DiscordBot.sendEmbed("Player Death", formattedMessage, 0x000000, null);
+    }
+
+    /**
+     * Checks if a message is an advancement message.
+     * @param message The message to check.
+     * @return True if the message is an advancement message, false otherwise.
+     */
+    private static boolean isAdvancementMessage(String message) {
+        return message.contains(" has made the advancement ");
+    }
+
+    /**
      * Sends a message to Discord-Bot when an advancement is made.
      * @param message The message to send.
      * @param overlay Whether the message should overlay the previous message.
      */
-    public static void sendAdvancementMessage(Text message, boolean overlay) {
-        if (advancementsEnabled && message.getString().contains("has made the advancement")) {
-            String advancementMessage = message.getString();
-            int playerNameEndIndex = advancementMessage.indexOf(" has made the advancement");
-            String playerName = advancementMessage.substring(0, playerNameEndIndex).trim();
-            String advancement = advancementMessage.substring(playerNameEndIndex + " has made the advancement ".length()).trim();
-            String formattedMessage = "**" + playerName + "** has made the advancement **" + advancement + "**";
-            DiscordBot.sendEmbed("Advancement Made", formattedMessage, 0x77DD77, null);
-        }
+    private static void handleAdvancementMessage(String message) {
+        int playerNameEndIndex = message.indexOf(" has made the advancement");
+        String playerName = message.substring(0, playerNameEndIndex).trim();
+        String advancement = message.substring(playerNameEndIndex + " has made the advancement ".length()).trim();
+        String formattedMessage = "**" + playerName + "** has made the advancement **" + advancement + "**";
+        DiscordBot.sendEmbed("Advancement Made", formattedMessage, 0x77DD77, null);
     }
 
     /**
