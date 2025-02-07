@@ -141,7 +141,7 @@ public class MinecraftChatHandler {
         String playerName = message.substring(0, playerNameEndIndex).trim();
         String deathMessage = message.substring(playerNameEndIndex).trim();
         String formattedMessage = "**" + playerName + "** " + deathMessage;
-        DiscordBot.sendEmbed("Player Death", formattedMessage, 0x000000, null);
+        DiscordBot.sendEmbed("💀 Player Death", formattedMessage, 0x000000, null);
     }
 
     /**
@@ -163,7 +163,7 @@ public class MinecraftChatHandler {
         String playerName = message.substring(0, playerNameEndIndex).trim();
         String advancement = message.substring(playerNameEndIndex + " has made the advancement ".length()).trim();
         String formattedMessage = "**" + playerName + "** has made the advancement **" + advancement + "**";
-        DiscordBot.sendEmbed("Advancement Made", formattedMessage, 0x77DD77, null);
+        DiscordBot.sendEmbed("✨ Advancement Made", formattedMessage, 0x77DD77, null);
     }
 
     /**
