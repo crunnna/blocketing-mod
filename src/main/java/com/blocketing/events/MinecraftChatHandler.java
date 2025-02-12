@@ -46,7 +46,6 @@ public class MinecraftChatHandler {
      */
     public static void onGameMessage(MinecraftServer server, Text message, boolean overlay) {
         String messageContent = message.getString();
-        System.out.println("DEBUG: onGameMessage received: " + messageContent); // Debug log
 
         if (deathsEnabled && isDeathMessage(messageContent)) {
             handleDeathMessage(messageContent);
@@ -150,20 +149,42 @@ public class MinecraftChatHandler {
      * @return True if the message is an advancement message, false otherwise.
      */
     private static boolean isAdvancementMessage(String message) {
-        return message.contains(" has made the advancement ");
+        return message.contains(" has made the advancement ")
+                || message.contains(" has reached the goal ")
+                || message.contains(" has completed the challenge ");
     }
 
     /**
      * Sends a message to Discord-Bot when an advancement is made.
      * @param message The message to send.
-     * @param overlay Whether the message should overlay the previous message.
      */
     private static void handleAdvancementMessage(String message) {
-        int playerNameEndIndex = message.indexOf(" has made the advancement");
-        String playerName = message.substring(0, playerNameEndIndex).trim();
-        String advancement = message.substring(playerNameEndIndex + " has made the advancement ".length()).trim();
-        String formattedMessage = "**" + playerName + "** has made the advancement **" + advancement + "**";
-        DiscordBot.sendEmbed("✨ Advancement Made", formattedMessage, 0x77DD77, null);
+        String playerName;
+        String advancement;
+        String title;
+        int playerNameEndIndex;
+
+        if (message.contains(" has made the advancement ")) {
+            playerNameEndIndex = message.indexOf(" has made the advancement");
+            playerName = message.substring(0, playerNameEndIndex).trim();
+            advancement = message.substring(playerNameEndIndex + " has made the advancement ".length()).trim();
+            title = "✨ Advancement Unlocked";
+        } else if (message.contains(" has reached the goal ")) {
+            playerNameEndIndex = message.indexOf(" has reached the goal");
+            playerName = message.substring(0, playerNameEndIndex).trim();
+            advancement = message.substring(playerNameEndIndex + " has reached the goal ".length()).trim();
+            title = "🏆 Goal Achieved";
+        } else if (message.contains(" has completed the challenge ")) {
+            playerNameEndIndex = message.indexOf(" has completed the challenge");
+            playerName = message.substring(0, playerNameEndIndex).trim();
+            advancement = message.substring(playerNameEndIndex + " has completed the challenge ".length()).trim();
+            title = "🔥 Challenge Completed";
+        } else {
+            return;
+        }
+
+        String formattedMessage = "**" + playerName + "** has unlocked **" + advancement + "**!";
+        DiscordBot.sendEmbed(title, formattedMessage, 0x77DD77, null);
     }
 
     /**
