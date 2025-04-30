@@ -3,9 +3,9 @@
 	"id": "blocketing",
 	"version": "${version}",
 	"name": "blocketing",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Syncs chat and commands between Discord and Minecraft",
 	"authors": [
-		"Me!"
+		"crunnna"
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
@@ -30,8 +30,8 @@
 		}
 	],
 	"depends": {
-		"fabricloader": ">=0.16.9",
-		"minecraft": "~1.21.4",
+		"fabricloader": ">=0.16.14",
+		"minecraft": "~1.21.5",
 		"java": ">=21",
 		"fabric-api": "*"
 	},
