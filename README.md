@@ -1,6 +1,5 @@
 <div align="center"><center>
-  <img alt="Icon" width="300" height="300" src="https://raw.githubusercontent.com/crunnna/blocketing-fabric-mod/main/src/main/resources/blocketing.jpeg">
-
+  <img alt="Icon" width="300" height="300" src="https://raw.githubusercontent.com/crunnna/blocketing-fabric-mod/main/src\main\resources\assets\blocketing\icon.png">
   <h1>Blocketing</h1>
 
   <h3>Blocketing is a Fabric mod for seamless communication between a Discord channel and a Minecraft server, enabling bidirectional message synchronization and command execution.</h3>
