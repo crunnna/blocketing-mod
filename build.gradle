@@ -1,6 +1,7 @@
 plugins {
 	id 'fabric-loom' version '1.10.1'
 	id 'maven-publish'
+	id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 version = project.mod_version
@@ -16,6 +17,7 @@ repositories {
 	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
+	mavenCentral()
 }
 
 loom {
@@ -38,6 +40,22 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+	// Discord JDA
+	implementation("net.dv8tion:JDA:5.5.1")
+	// Shadow JDA to include it in the final jar
+	shadow "net.dv8tion:JDA:5.5.1"
+}
+
+shadowJar {
+	configurations = [project.configurations.shadow]
+	relocate 'net.dv8tion.jda', 'com.blocketing.shadow.jda'
+	archiveClassifier.set("")
+}
+
+remapJar {
+	dependsOn shadowJar
+	input.set shadowJar.archiveFile
 }
 
 processResources {

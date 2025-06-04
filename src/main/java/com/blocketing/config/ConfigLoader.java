@@ -8,7 +8,7 @@ import java.nio.file.Paths;
 import java.util.Properties;
 
 /**
- * This class would be responsible for loading and saving the configuration for the blocketing-mod.
+ * This class is responsible for loading and saving the configuration for the blocketing-mod.
  */
 public class ConfigLoader {
 
@@ -49,21 +49,6 @@ public class ConfigLoader {
      */
     public static String getProperty(String key) {
         return config.getProperty(key);
-    }
-
-    /**
-     * Gets the property value as an integer for the given key.
-     *
-     * @param key The key to retrieve the value for.
-     * @return The integer value of the key, or -1 if not found or invalid.
-     */
-    public static int getIntProperty(String key) {
-        try {
-            return Integer.parseInt(getProperty(key));
-        } catch (NumberFormatException e) {
-            System.err.println("Invalid integer for key: " + key);
-            return -1;
-        }
     }
 
     /**

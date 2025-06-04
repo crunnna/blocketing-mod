@@ -10,7 +10,7 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 
 /**
- * This class would be responsible for the registration and execution of ingame blocketing-mod configuration commands.
+ * This class is responsible for the registration and execution of ingame blocketing-mod configuration commands.
  */
 public class ConfigurationCommand {
 
@@ -23,20 +23,6 @@ public class ConfigurationCommand {
         dispatcher.register(CommandManager.literal("blocketing")
                 .requires(source -> source.hasPermissionLevel(4))
                 .then(CommandManager.literal("setup")
-                        .then(CommandManager.literal("port")
-                                .then(CommandManager.argument("port", IntegerArgumentType.integer())
-                                        .executes(context -> {
-                                            int port = IntegerArgumentType.getInteger(context, "port");
-                                            ConfigLoader.setProperty("PORT", String.valueOf(port));
-                                            context.getSource().sendFeedback(() -> Text.of("Port set to " + port), true);
-                                            return 1;
-                                        })
-                                )
-                                .executes(context -> {
-                                    context.getSource().sendFeedback(() -> Text.of("This command sets the port for the HTTP server."), true);
-                                    return 1;
-                                })
-                        )
                         .then(CommandManager.literal("token")
                                 .then(CommandManager.argument("token", StringArgumentType.string())
                                         .executes(context -> {
@@ -51,6 +37,20 @@ public class ConfigurationCommand {
                                     return 1;
                                 })
                         )
+                        .then(CommandManager.literal("guild")
+                                .then(CommandManager.argument("guild", StringArgumentType.string())
+                                        .executes(context -> {
+                                            String guild = StringArgumentType.getString(context, "guild");
+                                            ConfigLoader.setProperty("GUILD_ID", guild);
+                                            context.getSource().sendFeedback(() -> Text.of("Guild ID set"), true);
+                                            return 1;
+                                        })
+                                )
+                                .executes(context -> {
+                                    context.getSource().sendFeedback(() -> Text.of("This command sets the guild (server) ID for Discord integration."), true);
+                                    return 1;
+                                })
+                        )
                         .then(CommandManager.literal("channel")
                                 .then(CommandManager.argument("channel", StringArgumentType.string())
                                         .executes(context -> {
@@ -62,6 +62,20 @@ public class ConfigurationCommand {
                                 )
                                 .executes(context -> {
                                     context.getSource().sendFeedback(() -> Text.of("This command sets the channel ID for Discord integration."), true);
+                                    return 1;
+                                })
+                        )
+                        .then(CommandManager.literal("op_role")
+                                .then(CommandManager.argument("op_role", StringArgumentType.string())
+                                        .executes(context -> {
+                                            String opRole = StringArgumentType.getString(context, "op_role");
+                                            ConfigLoader.setProperty("OP_ROLE_ID", opRole);
+                                            context.getSource().sendFeedback(() -> Text.of("Operator role ID set"), true);
+                                            return 1;
+                                        })
+                                )
+                                .executes(context -> {
+                                    context.getSource().sendFeedback(() -> Text.of("This command sets the operator role ID for Discord command permissions."), true);
                                     return 1;
                                 })
                         )
