@@ -21,6 +21,7 @@
 - ✅ **Advancement Messages**: Toggle the sending of advancement messages to Discord. 🏆
 - ✅ **Death Messages**: Toggle the sending of death messages to Discord. 💀
 - ✅ **Command Execution**: Execute Minecraft commands from Discord (with permissions). 🛠️
+- ✅ **Player Chat Webhook Mode**: Toggle Minecraft chat messages to Discord via webhook, showing player name and avatar. When enabled, chat uses the webhook; when disabled, chat uses the bot identity.
 - ✅ **In-Game Configuration**: Configure bot token, channel ID, guild ID and OP role directly from in-game commands. 🎮
 
 ---
@@ -47,6 +48,7 @@
 > /blocketing setup token <your_discord_bot_token>   # Required: Set your Discord bot token.
 > /blocketing setup channel <your_discord_channel_id>   # Required: Set the Discord channel ID for message synchronization.
 > /blocketing setup op_role <your_discord_role_id>   # Optional: Set a role for Discord command execution permissions.
+> /blocketing setup webhook_url <your_discord_webhook_url>   # Optional: Set the Discord webhook URL for player chat mode.
 > /blocketing setup guild <your_discord_guild_id>   # Optional: Set the Discord guild (server) ID.
 > ```
 
@@ -54,7 +56,13 @@
 > ```sh
 > /blocketing toggle advancements   # Toggle the sending of advancements to Discord.
 > /blocketing toggle deaths   # Toggle the sending of death messages to Discord.
+> /blocketing toggle player_chat_mode   # Toggle player chat via Discord webhook (player name/avatar in Discord).
 > ```
+
+### 📝 Player Chat Webhook Mode
+- When player_chat_mode is enabled, Minecraft chat messages are sent to Discord using a webhook, showing the player's name and avatar.
+- When disabled, messages are sent using the standard bot identity. 
+- Join/leave and server messages always use the bot.
 
 ---
 

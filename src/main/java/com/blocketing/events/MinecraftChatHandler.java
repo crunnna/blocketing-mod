@@ -2,6 +2,7 @@ package com.blocketing.events;
 
 import com.blocketing.config.ConfigLoader;
 import com.blocketing.discord.JdaDiscordBot;
+import com.blocketing.discord.WebhookSender;
 import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
 import net.minecraft.network.message.MessageType;
 import net.minecraft.network.message.SignedMessage;
@@ -33,9 +34,16 @@ public class MinecraftChatHandler {
      */
     public static void onChatMessage(SignedMessage message, ServerPlayerEntity sender, MessageType.Parameters parameters) {
         String playerName = sender.getGameProfile().getName();
+        String playerUUID = sender.getGameProfile().getId().toString();
         String chatMessage = message.getContent().getString();
+        boolean webhookMode = ConfigLoader.getBooleanProperty("WEBHOOK_CHAT_ENABLED", false);
 
-        JdaDiscordBot.sendMessageToDiscord("**[" + playerName + "]** " + chatMessage);
+        if (webhookMode) {
+            String avatarUrl = "https://api.mineatar.io/face/" + playerUUID + "?scale=8";
+            WebhookSender.send(playerName, avatarUrl, chatMessage);
+        } else {
+            JdaDiscordBot.sendMessageToDiscord("**[" + playerName + "]** " + chatMessage);
+        }
     }
 
     /**
