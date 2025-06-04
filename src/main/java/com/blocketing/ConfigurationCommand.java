@@ -4,7 +4,6 @@ import com.blocketing.config.ConfigLoader;
 import com.blocketing.events.MinecraftChatHandler;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
-import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
@@ -79,8 +78,25 @@ public class ConfigurationCommand {
                                     return 1;
                                 })
                         )
+                        .then(CommandManager.literal("webhook_url")
+                                .then(CommandManager.argument("webhook_url", StringArgumentType.greedyString())
+                                        .executes(context -> {
+                                            String webhookUrl = StringArgumentType.getString(context, "webhook_url");
+                                            ConfigLoader.setProperty("WEBHOOK_URL", webhookUrl);
+                                            context.getSource().sendFeedback(() -> Text.of("Webhook URL set"), true);
+                                            return 1;
+                                        })
+                                )
+                                .executes(context -> {
+                                    context.getSource().sendFeedback(() -> Text.of("This command sets the Discord webhook URL for player chat mode."), true);
+                                    return 1;
+                                })
+                        )
+                        .executes(context -> {
+                            context.getSource().sendFeedback(() -> Text.of("Available setup commands: token, guild, channel, op_role, webhook_url"), true);
+                            return 1;
+                        })
                 )
-
                 .then(CommandManager.literal("toggle")
                         .then(CommandManager.literal("advancements")
                                 .executes(context -> {
@@ -90,10 +106,6 @@ public class ConfigurationCommand {
                                     return 1;
                                 })
                         )
-                        .executes(context -> {
-                            context.getSource().sendFeedback(() -> Text.of("This command toggles the sending of advancement messages to Discord."), true);
-                            return 1;
-                        })
                         .then(CommandManager.literal("deaths")
                                 .executes(context -> {
                                     MinecraftChatHandler.toggleDeathsEnabled();
@@ -102,15 +114,19 @@ public class ConfigurationCommand {
                                     return 1;
                                 })
                         )
+                        .then(CommandManager.literal("player_chat_mode")
+                                .executes(context -> {
+                                    boolean enabled = !ConfigLoader.getBooleanProperty("WEBHOOK_CHAT_ENABLED", false);
+                                    ConfigLoader.setProperty("WEBHOOK_CHAT_ENABLED", String.valueOf(enabled));
+                                    context.getSource().sendFeedback(() -> Text.of("Webhook chat mode " + (enabled ? "enabled" : "disabled")), true);
+                                    return 1;
+                                })
+                        )
                         .executes(context -> {
-                            context.getSource().sendFeedback(() -> Text.of("This command toggles the sending of death messages to Discord."), true);
+                            context.getSource().sendFeedback(() -> Text.of("Available toggles: advancements, deaths, player_chat_mode"), true);
                             return 1;
                         })
                 )
-                .executes(context -> {
-                    context.getSource().sendFeedback(() -> Text.of("Available commands: setup, toggle"), true);
-                    return 1;
-                })
         );
     }
 }
