@@ -1,6 +1,6 @@
 package com.blocketing.events;
 
-import com.blocketing.discord.DiscordBot;
+import com.blocketing.discord.JdaDiscordBot;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.server.MinecraftServer;
@@ -25,9 +25,9 @@ public class PlayerEventHandler {
     private static void onPlayerJoin(ServerPlayNetworkHandler handler, PacketSender sender, MinecraftServer server) {
         String playerName = handler.getPlayer().getGameProfile().getName();
         String playerUUID = handler.getPlayer().getUuid().toString();
-        String avatarUrl = "https://api.mineatar.io/face/" + playerUUID + "?scale=8"; // Get the player's avatar    (scale= (4=mini, 8=normal, 12=big))
+        String avatarUrl = "https://api.mineatar.i-o/face/" + playerUUID + "?scale=8"; // Get the player's avatar    (scale= (4=mini, 8=normal, 12=big))
 
-        DiscordBot.sendEmbed("Player Joined", "**" + playerName + "** joined the server.", 0x00FF00, avatarUrl); // Green colored embed
+        JdaDiscordBot.sendEmbedToDiscord("Player Joined", "**" + playerName + "** joined the server.", 0x00FF00, avatarUrl); // Green colored embed
     }
 
     /**
@@ -40,6 +40,6 @@ public class PlayerEventHandler {
         String playerUUID = handler.getPlayer().getUuid().toString();
         String avatarUrl = "https://api.mineatar.io/face/" + playerUUID + "?scale=8"; // Get the player's avatar    (scale= (4=mini, 8=normal, 12=big))
 
-        DiscordBot.sendEmbed("Player Left", "**" + playerName + "** left the server.", 0xFF0000, avatarUrl); // Red colored embed
+        JdaDiscordBot.sendEmbedToDiscord("Player Left", "**" + playerName + "** left the server.", 0xFF0000, avatarUrl); // Red colored embed
     }
 }

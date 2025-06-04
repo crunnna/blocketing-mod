@@ -12,9 +12,6 @@
 
 </center></div>
 
-## 🔗 Related Repositories
-- **[Blocketing Bot](https://github.com/crunnna/blocketing-bot)**: A **Discord bot** for seamless communication between a Discord channel and a Minecraft server, enabling bidirectional message synchronization.
-
 ---
 
 ## ✨ Features
@@ -24,18 +21,13 @@
 - ✅ **Advancement Messages**: Toggle the sending of advancement messages to Discord. 🏆
 - ✅ **Death Messages**: Toggle the sending of death messages to Discord. 💀
 - ✅ **Command Execution**: Execute Minecraft commands from Discord (with permissions). 🛠️
-- ✅ **In-Game Configuration**: Configure bot token, channel ID, and port directly from in-game commands. 🎮
+- ✅ **In-Game Configuration**: Configure bot token, channel ID, guild ID and OP role directly from in-game commands. 🎮
 
 ---
 
 ## 🔨 Before using this mod
 ### 🤖 Setting Up the Discord Bot:
-- **Create a new Discord bot** (Follow a YouTube guide on how to create a Discord bot.)
-- Configure and run the bot from the **[Blocketing Bot](#-related-repositories) repository**.
-
-### 🔧 Opening a Port:
-- Ensure your **Minecraft server** allows incoming HTTP requests.
-- Follow a Youtube guide based on your hosting provider to open a port.
+- **Create a new Discord bot application** (Follow a YouTube guide on how to create a Discord bot.) or create one here [Discord Developer Portal](https://discord.com/developers/applications).
 
 ---
 
@@ -52,9 +44,10 @@
 ## ⚙️ Configuration Commands
 ### 🎮 In-Game Setup
 > ```sh
-> /blocketing setup token <your_discord_bot_token>
-> /blocketing setup channel <your_discord_channel_id>
-> /blocketing setup port <your_http_server_minecraft_port>
+> /blocketing setup token <your_discord_bot_token>   # Required: Set your Discord bot token.
+> /blocketing setup channel <your_discord_channel_id>   # Required: Set the Discord channel ID for message synchronization.
+> /blocketing setup op_role <your_discord_role_id>   # Optional: Set a role for Discord command execution permissions.
+> /blocketing setup guild <your_discord_guild_id>   # Optional: Set the Discord guild (server) ID.
 > ```
 
 ### 🔄 Toggle Features

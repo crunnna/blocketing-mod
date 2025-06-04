@@ -1,7 +1,7 @@
 package com.blocketing.events;
 
 import com.blocketing.config.ConfigLoader;
-import com.blocketing.discord.DiscordBot;
+import com.blocketing.discord.JdaDiscordBot;
 import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
 import net.minecraft.network.message.MessageType;
 import net.minecraft.network.message.SignedMessage;
@@ -10,7 +10,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
 /**
- * This class would be responsible for monitoring Minecraft chat messages and sending them to Discord.
+ * This class is responsible for monitoring Minecraft chat messages and sending them to Discord.
  */
 public class MinecraftChatHandler {
 
@@ -35,7 +35,7 @@ public class MinecraftChatHandler {
         String playerName = sender.getGameProfile().getName();
         String chatMessage = message.getContent().getString();
 
-        DiscordBot.sendMessage("**[" + playerName + "]** " + chatMessage);
+        JdaDiscordBot.sendMessageToDiscord("**[" + playerName + "]** " + chatMessage);
     }
 
     /**
@@ -71,7 +71,7 @@ public class MinecraftChatHandler {
      */
     public static void sendServerStartMessage(String serverName) {
         String placeholderUrl = "https://example.com/placeholder.png";
-        DiscordBot.sendEmbed("Server Started", "The Minecraft server **" + serverName + "** has started.", 0x800080, placeholderUrl); // Purple colored embed
+        JdaDiscordBot.sendEmbedToDiscord("Server Started", "The Minecraft server **" + serverName + "** has started.", 0x800080, placeholderUrl); // Purple colored embed
     }
 
     /**
@@ -79,7 +79,7 @@ public class MinecraftChatHandler {
      */
     public static void sendServerStopMessage() {
         String placeholderUrl = "https://example.com/placeholder.png";
-        DiscordBot.sendEmbed("Server Stopped", "The Minecraft server has stopped.", 0x40E0D0, placeholderUrl); // Turquoise colored embed
+        JdaDiscordBot.sendEmbedToDiscord("Server Stopped", "The Minecraft server has stopped.", 0x40E0D0, placeholderUrl); // Turquoise colored embed
     }
 
     /**
@@ -140,7 +140,7 @@ public class MinecraftChatHandler {
         String playerName = message.substring(0, playerNameEndIndex).trim();
         String deathMessage = message.substring(playerNameEndIndex).trim();
         String formattedMessage = "**" + playerName + "** " + deathMessage;
-        DiscordBot.sendEmbed("💀 Player Death", formattedMessage, 0x000000, null);
+        JdaDiscordBot.sendEmbedToDiscord("💀 Player Death", formattedMessage, 0x000000, null);
     }
 
     /**
@@ -184,7 +184,7 @@ public class MinecraftChatHandler {
         }
 
         String formattedMessage = "**" + playerName + "** has unlocked **" + advancement + "**!";
-        DiscordBot.sendEmbed(title, formattedMessage, 0x77DD77, null);
+        JdaDiscordBot.sendEmbedToDiscord(title, formattedMessage, 0x77DD77, null);
     }
 
     /**

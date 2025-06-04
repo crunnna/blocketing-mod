@@ -1,5 +1,6 @@
 package com.blocketing;
 
+import com.blocketing.discord.JdaDiscordBot;
 import com.blocketing.events.MinecraftChatHandler;
 import com.blocketing.events.PlayerEventHandler;
 import net.fabricmc.api.ModInitializer;
@@ -15,6 +16,12 @@ public class Blocketing implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		System.out.println("Blocketing Mod is initializing...");
+
+		try {
+			JdaDiscordBot.start();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		// Registers the server start event
 		ServerLifecycleEvents.SERVER_STARTED.register(this::onServerStart);
@@ -34,14 +41,20 @@ public class Blocketing implements ModInitializer {
 		System.out.println("Blocketing Mod has been initialized.");
 	}
 
+	private static MinecraftServer minecraftServer;
+
+	public static MinecraftServer getMinecraftServer() {
+		return minecraftServer;
+	}
+
 	/**
 	 * This method is called when the server starts.
 	 *
 	 * @param minecraftServer The Minecraft server.
 	 */
-	private void onServerStart(MinecraftServer minecraftServer) {
-		System.out.println("Server has started. Starting Discord HTTP server...");
-		HttpMinecraftServer.startServer(minecraftServer); // Starts the HTTP server
+	private void onServerStart(MinecraftServer server) {
+		System.out.println("Server has started.");
+		minecraftServer = server;
 		MinecraftChatHandler.sendServerStartMessage(minecraftServer.getServerMotd()); // Sends a server start message to the Discord-Bot
 	}
 
@@ -50,8 +63,9 @@ public class Blocketing implements ModInitializer {
 	 *
 	 * @param minecraftServer The Minecraft server.
 	 */
-	private void onServerStop(MinecraftServer minecraftServer) {
-		System.out.println("Server has stopped. Stopping Discord HTTP server...");
+	private void onServerStop(MinecraftServer server) {
+		System.out.println("Server has stopped.");
 		MinecraftChatHandler.sendServerStopMessage(); // Sends a server stop message to the Discord-Bot
+		minecraftServer = null;
 	}
 }
