@@ -6,12 +6,16 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import com.blocketing.config.ConfigLoader;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class is responsible for managing the Discord bot using JDA.
  * It handles starting the bot, sending messages and embeds to Discord, and provides access to the JDA instance.
  */
 public class JdaDiscordBot {
+    private static Logger LOGGER = LoggerFactory.getLogger("Blocketing|Discord");
+
     private static JDA jda;
 
     /**
@@ -23,7 +27,7 @@ public class JdaDiscordBot {
     public static void start() {
         String token = ConfigLoader.getProperty("BOT_TOKEN");
         if (token == null || token.isBlank()) {
-            System.err.println("[Blocketing] BOT_TOKEN is not set! Discord integration will be disabled.");
+            LOGGER.warn("[Blocketing] BOT_TOKEN is not set! Discord integration will be disabled.");
             return;
         }
         try {
@@ -43,10 +47,10 @@ public class JdaDiscordBot {
                     ).queue();
                 }
             }
-            System.out.println("JDA Discord Bot started!");
+            LOGGER.info("JDA Discord Bot started!");
         } catch (Exception e) {
-            System.err.println("[Blocketing] Failed to start Discord bot: " + e.getMessage());
-            System.err.println("[Blocketing] Discord integration is disabled. Please check your configuration.");
+            LOGGER.error("Failed to start Discord bot: " + e.getMessage());
+            LOGGER.error("Discord integration is disabled. Please check your configuration.");
         }
     }
 
@@ -58,7 +62,12 @@ public class JdaDiscordBot {
     public static void sendMessageToDiscord(String message) {
         String channelId = ConfigLoader.getProperty("CHANNEL_ID");
         if (jda != null && channelId != null) {
-            jda.getTextChannelById(channelId).sendMessage(message).queue();
+            var channel = jda.getTextChannelById(channelId);
+            if (channel != null) {
+                channel.sendMessage(message).queue();
+            } else {
+                LOGGER.warn("Discord channel not found for ID: {}", channelId);
+            }
         }
     }
 
@@ -73,13 +82,18 @@ public class JdaDiscordBot {
     public static void sendEmbedToDiscord(String title, String description, int color, String avatarUrl) {
         String channelId = ConfigLoader.getProperty("CHANNEL_ID");
         if (jda != null && channelId != null) {
-            net.dv8tion.jda.api.EmbedBuilder embed = new net.dv8tion.jda.api.EmbedBuilder()
-                    .setTitle(title)
-                    .setDescription(description)
-                    .setColor(new java.awt.Color(color));
-            if (avatarUrl != null) embed.setThumbnail(avatarUrl);
-            embed.setTimestamp(java.time.Instant.now());
-            jda.getTextChannelById(channelId).sendMessageEmbeds(embed.build()).queue();
+            var channel = jda.getTextChannelById(channelId);
+            if (channel != null) {
+                net.dv8tion.jda.api.EmbedBuilder embed = new net.dv8tion.jda.api.EmbedBuilder()
+                        .setTitle(title)
+                        .setDescription(description)
+                        .setColor(new java.awt.Color(color));
+                if (avatarUrl != null) embed.setThumbnail(avatarUrl);
+                embed.setTimestamp(java.time.Instant.now());
+                channel.sendMessageEmbeds(embed.build()).queue();
+            } else {
+                LOGGER.warn("Discord channel not found for ID: {}", channelId);
+            }
         }
     }
 

@@ -8,20 +8,25 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.server.MinecraftServer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The main class of the mod. This is where the mod is initialized.
  */
 public class Blocketing implements ModInitializer {
+	public static final Logger LOGGER = LoggerFactory.getLogger("Blocketing");
+
+	private static MinecraftServer minecraftServer;
 
 	@Override
 	public void onInitialize() {
-		System.out.println("Blocketing Mod is initializing...");
+		LOGGER.info("Blocketing Mod is initializing...");
 
 		try {
 			JdaDiscordBot.start();
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error("Failed to start Discord bot", e);
 		}
 
 		// Registers the server start event
@@ -39,22 +44,16 @@ public class Blocketing implements ModInitializer {
 			ConfigurationCommand.register(dispatcher);
 		});
 
-		System.out.println("Blocketing Mod has been initialized.");
-	}
-
-	private static MinecraftServer minecraftServer;
-
-	public static MinecraftServer getMinecraftServer() {
-		return minecraftServer;
+		LOGGER.info("Blocketing Mod has been initialized.");
 	}
 
 	/**
 	 * This method is called when the server starts.
 	 *
-	 * @param minecraftServer The Minecraft server.
+	 * @param server The Minecraft server.
 	 */
 	private void onServerStart(MinecraftServer server) {
-		System.out.println("Server has started.");
+		LOGGER.info("Server has started.");
 		minecraftServer = server;
 		MinecraftChatHandler.sendServerStartMessage(minecraftServer.getServerMotd()); // Sends a server start message to the Discord-Bot
 	}
@@ -62,11 +61,15 @@ public class Blocketing implements ModInitializer {
 	/**
 	 * This method is called when the server stops.
 	 *
-	 * @param minecraftServer The Minecraft server.
+	 * @param server The Minecraft server.
 	 */
 	private void onServerStop(MinecraftServer server) {
-		System.out.println("Server has stopped.");
+		LOGGER.info("Server has stopped.");
 		MinecraftChatHandler.sendServerStopMessage(); // Sends a server stop message to the Discord-Bot
 		minecraftServer = null;
+	}
+
+	public static MinecraftServer getMinecraftServer() {
+		return minecraftServer;
 	}
 }
