@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
  * It handles starting the bot, sending messages and embeds to Discord, and provides access to the JDA instance.
  */
 public class JdaDiscordBot {
-    private static Logger LOGGER = LoggerFactory.getLogger("Blocketing|Discord");
+    private static final Logger LOGGER = LoggerFactory.getLogger("Blocketing|Discord");
 
     private static JDA jda;
 
@@ -66,15 +66,15 @@ public class JdaDiscordBot {
     public static void sendMessageToDiscord(String message) {
         String channelId = ConfigLoader.getProperty("CHANNEL_ID");
         if (jda == null) return;
-        if (!isValidSnowflake(channelId)) {
-            LOGGER.error("Invalid CHANNEL_ID '{}'. It must be a numeric Discord channel ID.", channelId);
-            return;
-        }
-        var channel = jda.getTextChannelById(channelId);
-        if (channel != null) {
-            channel.sendMessage(message).queue();
+        if (isValidSnowflake(channelId)) {
+            var channel = jda.getTextChannelById(channelId);
+            if (channel != null) {
+                channel.sendMessage(message).queue();
+            } else {
+                LOGGER.warn("Discord channel not found for ID: {}", channelId);
+            }
         } else {
-            LOGGER.warn("Discord channel not found for ID: {}", channelId);
+            LOGGER.error("Invalid CHANNEL_ID '{}'. It must be a numeric Discord channel ID.", channelId);
         }
     }
 
@@ -89,21 +89,21 @@ public class JdaDiscordBot {
     public static void sendEmbedToDiscord(String title, String description, int color, String avatarUrl) {
         String channelId = ConfigLoader.getProperty("CHANNEL_ID");
         if (jda == null) return;
-        if (!isValidSnowflake(channelId)) {
-            LOGGER.error("Invalid CHANNEL_ID '{}'. It must be a numeric Discord channel ID.", channelId);
-            return;
-        }
-        var channel = jda.getTextChannelById(channelId);
-        if (channel != null) {
-            net.dv8tion.jda.api.EmbedBuilder embed = new net.dv8tion.jda.api.EmbedBuilder()
-                    .setTitle(title)
-                    .setDescription(description)
-                    .setColor(new java.awt.Color(color));
-            if (avatarUrl != null) embed.setThumbnail(avatarUrl);
-            embed.setTimestamp(java.time.Instant.now());
-            channel.sendMessageEmbeds(embed.build()).queue();
+        if (isValidSnowflake(channelId)) {
+            var channel = jda.getTextChannelById(channelId);
+            if (channel != null) {
+                net.dv8tion.jda.api.EmbedBuilder embed = new net.dv8tion.jda.api.EmbedBuilder()
+                        .setTitle(title)
+                        .setDescription(description)
+                        .setColor(new java.awt.Color(color));
+                if (avatarUrl != null) embed.setThumbnail(avatarUrl);
+                embed.setTimestamp(java.time.Instant.now());
+                channel.sendMessageEmbeds(embed.build()).queue();
+            } else {
+                LOGGER.warn("Discord channel not found for ID: {}", channelId);
+            }
         } else {
-            LOGGER.warn("Discord channel not found for ID: {}", channelId);
+            LOGGER.error("Invalid CHANNEL_ID '{}'. It must be a numeric Discord channel ID.", channelId);
         }
     }
 
