@@ -4,7 +4,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import com.blocketing.config.ConfigLoader;
 import com.blocketing.Blocketing;
-import com.blocketing.events.MinecraftChatHandler;
+import com.blocketing.utils.ColorUtil;
 import net.minecraft.server.MinecraftServer;
 
 /**
@@ -29,7 +29,36 @@ public class JdaMessageListener extends ListenerAdapter {
         if (server != null) {
             String username = event.getAuthor().getName();
             String content = event.getMessage().getContentDisplay();
-            MinecraftChatHandler.sendMessageToAllPlayers(server, username, content);
+
+            // Get top role color
+            java.awt.Color roleColor = null;
+            if (event.getMember() != null && event.getMember().getColor() != null) {
+                roleColor = event.getMember().getColor();
+            }
+            net.minecraft.util.Formatting mcRoleColor = com.blocketing.utils.ColorUtil.getNearestFormatting(roleColor);
+
+            // Build formatted message
+            net.minecraft.text.Text prefix = net.minecraft.text.Text.literal("[")
+                    .styled(style -> style.withColor(net.minecraft.util.Formatting.BLUE))
+                    .append(net.minecraft.text.Text.literal("Discord")
+                            .styled(style -> style.withColor(net.minecraft.util.Formatting.BLUE).withBold(true)))
+                    .append(net.minecraft.text.Text.literal("] ")
+                            .styled(style -> style.withColor(net.minecraft.util.Formatting.BLUE)));
+
+            net.minecraft.text.Text user = net.minecraft.text.Text.literal("<" + username + ">")
+                    .styled(style -> style.withColor(mcRoleColor));
+
+            net.minecraft.text.Text msg = net.minecraft.text.Text.literal(" " + content)
+                    .styled(style -> style.withColor(net.minecraft.util.Formatting.WHITE));
+
+            net.minecraft.text.Text full = net.minecraft.text.Text.empty()
+                    .append(prefix)
+                    .append(user)
+                    .append(msg);
+
+            for (net.minecraft.server.network.ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
+                player.sendMessage(full, false);
+            }
         }
     }
 }
