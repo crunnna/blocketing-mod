@@ -20,37 +20,41 @@ public class JdaDiscordBot {
 
     /**
      * Starts the Discord bot using the token from the configuration.
-     * Registers event listeners and slash commands.
-     *
-     * @throws Exception if the bot cannot be started.
      */
     public static void start() {
+        if (!ConfigLoader.isDiscordConfigValid(LOGGER)) return;
+
         String token = ConfigLoader.getProperty("BOT_TOKEN");
-        if (token == null || token.isBlank()) {
-            LOGGER.warn("[Blocketing] BOT_TOKEN is not set! Discord integration will be disabled.");
-            return;
-        }
+        String guildId = ConfigLoader.getProperty("GUILD_ID");
+
         try {
             jda = JDABuilder.createDefault(token)
                     .enableIntents(GatewayIntent.MESSAGE_CONTENT)
                     .addEventListeners(new JdaMessageListener(), new JdaCommandListener())
                     .build().awaitReady();
 
-            // Register slash command in the guild
-            String guildId = ConfigLoader.getProperty("GUILD_ID");
-            if (guildId != null) {
-                Guild guild = jda.getGuildById(guildId);
-                if (guild != null) {
-                    guild.updateCommands().addCommands(
-                            Commands.slash("command", "Execute a Minecraft command")
-                                    .addOption(net.dv8tion.jda.api.interactions.commands.OptionType.STRING, "command", "The command to execute", true)
-                    ).queue();
-                }
-            }
+            registerSlashCommands(guildId);
             LOGGER.info("JDA Discord Bot started!");
         } catch (Exception e) {
-            LOGGER.error("Failed to start Discord bot: " + e.getMessage());
-            LOGGER.error("Discord integration is disabled. Please check your configuration.");
+            LOGGER.error("Failed to start Discord bot: {}", e.getMessage());
+            LOGGER.error("Discord integration is disabled. Please check your configuration.", e);
+        }
+    }
+
+    /**
+     * Registers slash commands for the bot in the specified guild.
+     *
+     * @param guildId The ID of the guild where the commands will be registered.
+     */
+    private static void registerSlashCommands(String guildId) {
+        Guild guild = jda.getGuildById(guildId);
+        if (guild != null) {
+            guild.updateCommands().addCommands(
+                    Commands.slash("command", "Execute a Minecraft command")
+                            .addOption(net.dv8tion.jda.api.interactions.commands.OptionType.STRING, "command", "The command to execute", true)
+            ).queue();
+        } else {
+            LOGGER.warn("Discord guild not found for ID: {}", guildId);
         }
     }
 
@@ -61,13 +65,16 @@ public class JdaDiscordBot {
      */
     public static void sendMessageToDiscord(String message) {
         String channelId = ConfigLoader.getProperty("CHANNEL_ID");
-        if (jda != null && channelId != null) {
-            var channel = jda.getTextChannelById(channelId);
-            if (channel != null) {
-                channel.sendMessage(message).queue();
-            } else {
-                LOGGER.warn("Discord channel not found for ID: {}", channelId);
-            }
+        if (jda == null) return;
+        if (!isValidSnowflake(channelId)) {
+            LOGGER.error("Invalid CHANNEL_ID '{}'. It must be a numeric Discord channel ID.", channelId);
+            return;
+        }
+        var channel = jda.getTextChannelById(channelId);
+        if (channel != null) {
+            channel.sendMessage(message).queue();
+        } else {
+            LOGGER.warn("Discord channel not found for ID: {}", channelId);
         }
     }
 
@@ -81,23 +88,32 @@ public class JdaDiscordBot {
      */
     public static void sendEmbedToDiscord(String title, String description, int color, String avatarUrl) {
         String channelId = ConfigLoader.getProperty("CHANNEL_ID");
-        if (jda != null && channelId != null) {
-            var channel = jda.getTextChannelById(channelId);
-            if (channel != null) {
-                net.dv8tion.jda.api.EmbedBuilder embed = new net.dv8tion.jda.api.EmbedBuilder()
-                        .setTitle(title)
-                        .setDescription(description)
-                        .setColor(new java.awt.Color(color));
-                if (avatarUrl != null) embed.setThumbnail(avatarUrl);
-                embed.setTimestamp(java.time.Instant.now());
-                channel.sendMessageEmbeds(embed.build()).queue();
-            } else {
-                LOGGER.warn("Discord channel not found for ID: {}", channelId);
-            }
+        if (jda == null) return;
+        if (!isValidSnowflake(channelId)) {
+            LOGGER.error("Invalid CHANNEL_ID '{}'. It must be a numeric Discord channel ID.", channelId);
+            return;
+        }
+        var channel = jda.getTextChannelById(channelId);
+        if (channel != null) {
+            net.dv8tion.jda.api.EmbedBuilder embed = new net.dv8tion.jda.api.EmbedBuilder()
+                    .setTitle(title)
+                    .setDescription(description)
+                    .setColor(new java.awt.Color(color));
+            if (avatarUrl != null) embed.setThumbnail(avatarUrl);
+            embed.setTimestamp(java.time.Instant.now());
+            channel.sendMessageEmbeds(embed.build()).queue();
+        } else {
+            LOGGER.warn("Discord channel not found for ID: {}", channelId);
         }
     }
 
-    public static JDA getJda() {
-        return jda;
+    /**
+     * Checks if the given string is a valid Discord snowflake ID.
+     *
+     * @param id The string to check.
+     * @return True if the string is a valid snowflake ID, false otherwise.
+     */
+    private static boolean isValidSnowflake(String id) {
+        return id != null && id.matches("\\d{17,20}");
     }
 }

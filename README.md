@@ -47,9 +47,9 @@
 > ```sh
 > /blocketing setup token <your_discord_bot_token>   # Required: Set your Discord bot token.
 > /blocketing setup channel <your_discord_channel_id>   # Required: Set the Discord channel ID for message synchronization.
+> /blocketing setup guild <your_discord_guild_id>   # Required: Set the Discord guild (server) ID.
 > /blocketing setup op_role <your_discord_role_id>   # Optional: Set a role for Discord command execution permissions.
 > /blocketing setup webhook_url <your_discord_webhook_url>   # Optional: Set the Discord webhook URL for player chat mode.
-> /blocketing setup guild <your_discord_guild_id>   # Optional: Set the Discord guild (server) ID.
 > ```
 
 ### 🔄 Toggle Features
