@@ -1,5 +1,8 @@
 package com.blocketing.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,6 +14,7 @@ import java.util.Properties;
  * This class is responsible for loading and saving the configuration for the blocketing-mod.
  */
 public class ConfigLoader {
+    private static final Logger LOGGER = LoggerFactory.getLogger("Blocketing|Config");
 
     private static final Properties config = new Properties();
     private static final String CONFIG_PATH = "config/blocketing.properties";
@@ -25,19 +29,19 @@ public class ConfigLoader {
             // Checks whether the ‘config’ directory exists and creates it if necessary
             if (!Files.exists(Paths.get("config"))) {
                 Files.createDirectories(Paths.get("config"));
-                System.out.println("Configuration directory created at config");
+                LOGGER.info("Configuration directory created at config");
             }
             // Checks whether the configuration file exists and creates it if necessary
             if (!Files.exists(Paths.get(CONFIG_PATH))) {
                 Files.createFile(Paths.get(CONFIG_PATH));
-                System.out.println("Configuration file created at " + CONFIG_PATH);
+                LOGGER.info("Configuration file created at {}", CONFIG_PATH);
             }
             // Loads the configuration file
             try (InputStream input = Files.newInputStream(Paths.get(CONFIG_PATH))) {
                 config.load(input);
             }
         } catch (IOException e) {
-            System.err.println("Error loading the configuration file: " + e.getMessage());
+            LOGGER.error("Error loading the configuration file", e);
         }
     }
 
@@ -81,7 +85,7 @@ public class ConfigLoader {
         try (FileOutputStream output = new FileOutputStream(CONFIG_PATH)) {
             config.store(output, null);
         } catch (IOException e) {
-            System.err.println("Error saving the configuration file: " + e.getMessage());
+            LOGGER.error("Error saving the configuration file", e);
         }
     }
 }
