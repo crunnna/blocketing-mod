@@ -46,6 +46,32 @@ public class ConfigLoader {
     }
 
     /**
+     * Validates the Discord configuration.
+     *
+     * @param logger The logger to log warnings if the configuration is invalid.
+     * @return true if the configuration is valid, false otherwise.
+     */
+    public static boolean isDiscordConfigValid(Logger logger) {
+        String token = getProperty("BOT_TOKEN");
+        String guildId = getProperty("GUILD_ID");
+        String channelId = getProperty("CHANNEL_ID");
+
+        if (token == null || token.isBlank()) {
+            logger.warn("BOT_TOKEN is not set! Discord integration will be disabled.");
+            return false;
+        }
+        if (guildId == null || !guildId.matches("\\d{17,20}")) {
+            logger.warn("GUILD_ID is invalid or not set! Discord integration will be disabled.");
+            return false;
+        }
+        if (channelId == null || !channelId.matches("\\d{17,20}")) {
+            logger.warn("CHANNEL_ID is invalid or not set! Discord integration will be disabled.");
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * Gets the property value for the given key.
      *
      * @param key The key to retrieve the value for.
