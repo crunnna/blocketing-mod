@@ -14,43 +14,57 @@
 
 ---
 
-## ✨ Features
-- ✅ **Message Relay**: Sync messages between a Minecraft server and a Discord channel. 💬
-- ✅ **Join/Leave Notifications**: Send join and leave messages to Discord with player avatars. 🖼️
-- ✅ **Server Start/Stop Notifications**: Notify Discord when the server starts or stops. 🚀
-- ✅ **Advancement Messages**: Toggle the sending of advancement messages to Discord. 🏆
-- ✅ **Death Messages**: Toggle the sending of death messages to Discord. 💀
-- ✅ **Command Execution**: Execute Minecraft commands from Discord (with permissions). 🛠️
-- ✅ **Player Chat Webhook Mode**: Toggle Minecraft chat messages to Discord via webhook, showing player name and avatar. When enabled, chat uses the webhook; when disabled, chat uses the bot identity.
-- ✅ **In-Game Configuration**: Configure bot token, channel ID, guild ID and OP role directly from in-game commands. 🎮
+## 📚 Table of Contents
+- [Features](#-features)
+- [Installation](#-installation)
+- [Permissions](#-permissions)
+- [Configuration](#-configuration-commands)
+- [Player-Chat Webhook Mode](#-player-chat-webhook-mode)
+- [Need Help?](#-need-help-feel-free-to-ask-questions-or-open-an-issue)
 
 ---
 
-## 🔨 Before using this mod
-### 🤖 Setting Up the Discord Bot:
-- **Create a new Discord bot application** (Follow a YouTube guide on how to create a Discord bot.) or create one here [Discord Developer Portal](https://discord.com/developers/applications).
+## ✨ Features
+- ✅ Syncs Minecraft and Discord messages in both directions 💬
+- ✅ Join/Leave notifications with player avatars 🖼️
+- ✅ Server start/stop announcements 🚀
+- ✅ Toggle sending advancement and death messages to Discord 🏆
+- ✅ Run Minecraft commands from Discord (permission-based) 🛠️
+- ✅ Player chat webhook mode (with avatar & name) 👨
+- ✅ In-game configuration via commands 🎮
 
 ---
 
 ## 🚀 Installation
-> [!IMPORTANT]
-1️⃣ **Download the latest release** from the [Releases Page](https://github.com/crunnna/blocketing-fabric-mod/releases).  
-2️⃣ **Place the `.jar` file in your server’s `mods/` folder**.  
-3️⃣ **Start your Minecraft server** with Fabric installed.  
+### 🔨 1. Install the Mod
+1️⃣ **Download the latest .jar** from the [Releases Page](https://github.com/crunnna/blocketing-fabric-mod/releases).  
+2️⃣ **Place the `.jar` file in your server’s `mods/` folder**.
+3️⃣ **Start the Minecraft server** with **Fabric**.
 4️⃣ **Configure the bot** using the in-game commands (see below).  
-5️⃣ The mod will log in to Discord and start listening for messages and commands.
+
+### 🤖 2. Set up the Discord Bot
+- **Create a new Discord bot application** in the **[Discord Developer Portal](https://discord.com/developers/applications)**.
+- **Add** the bot to your Discord server. 
+- **Copy** the **`bot token`** for later configuration.
+
 
 ---
 
+## 🛡️ Permissions
+- **Minecraft**: `/blocketing` commands require permission **level 4 (OP)**.
+- **Discord**: For `/command` via Discord, the user must have the configured **OP role** (if set).
+
+
 ## ⚙️ Configuration Commands
 ### 🎮 In-Game Setup
-> ```sh
-> /blocketing setup token <your_discord_bot_token>   # Required: Set your Discord bot token.
-> /blocketing setup channel <your_discord_channel_id>   # Required: Set the Discord channel ID for message synchronization.
-> /blocketing setup guild <your_discord_guild_id>   # Required: Set the Discord guild (server) ID.
-> /blocketing setup op_role <your_discord_role_id>   # Optional: Set a role for Discord command execution permissions.
-> /blocketing setup webhook_url <your_discord_webhook_url>   # Optional: Set the Discord webhook URL for player chat mode.
-> ```
+
+| Command                                | Required | Description                                             |
+|----------------------------------------|----------|---------------------------------------------------------|
+| /blocketing setup token <token>        | Yes      | Set your Discord bot token                              |
+| /blocketing setup channel <channel_id> | Yes      | Set the Discord channel ID for message sync             |
+| /blocketing setup guild <guild_id>     | Yes      | Set the Discord guild (server) ID                       |
+| /blocketing setup op_role <role_id>    | No       | Set Discord role for command permissions                |
+| /blocketing setup webhook_url <url>    | No       | Set webhook URL for player chat mode                    |
 
 ### 🔄 Toggle Features
 > ```sh
@@ -58,6 +72,13 @@
 > /blocketing toggle deaths   # Toggle the sending of death messages to Discord.
 > /blocketing toggle player_chat_mode   # Toggle player chat via Discord webhook (player name/avatar in Discord).
 > ```
+
+### ♻️ Reload Config
+> ```sh
+> /blocketing reload   # Reload the configuration without restarting the server.
+> ```
+
+--- 
 
 ### 📝 Player Chat Webhook Mode
 - When player_chat_mode is enabled, Minecraft chat messages are sent to Discord using a webhook, showing the player's name and avatar.
