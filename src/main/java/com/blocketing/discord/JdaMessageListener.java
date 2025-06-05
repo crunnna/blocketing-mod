@@ -4,7 +4,6 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import com.blocketing.config.ConfigLoader;
 import com.blocketing.Blocketing;
-import com.blocketing.utils.ColorUtil;
 import net.minecraft.server.MinecraftServer;
 
 /**
