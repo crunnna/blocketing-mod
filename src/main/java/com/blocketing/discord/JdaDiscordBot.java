@@ -65,7 +65,10 @@ public class JdaDiscordBot {
      */
     public static void sendMessageToDiscord(String message) {
         String channelId = ConfigLoader.getProperty("CHANNEL_ID");
-        if (jda == null) return;
+        if (jda == null) {
+            LOGGER.warn("JDA is not initialized. Cannot send message to Discord.");
+            return;
+        }
         if (isValidSnowflake(channelId)) {
             var channel = jda.getTextChannelById(channelId);
             if (channel != null) {
@@ -88,7 +91,10 @@ public class JdaDiscordBot {
      */
     public static void sendEmbedToDiscord(String title, String description, int color, String avatarUrl) {
         String channelId = ConfigLoader.getProperty("CHANNEL_ID");
-        if (jda == null) return;
+        if (jda == null) {
+            LOGGER.warn("JDA is not initialized. Cannot send embed to Discord.");
+            return;
+        }
         if (isValidSnowflake(channelId)) {
             var channel = jda.getTextChannelById(channelId);
             if (channel != null) {
