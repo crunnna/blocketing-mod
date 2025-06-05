@@ -72,6 +72,19 @@ public class ConfigLoader {
     }
 
     /**
+     * Reloads the configuration from the file.
+     */
+    public static void reloadConfig() {
+        try (InputStream input = Files.newInputStream(Paths.get(CONFIG_PATH))) {
+            config.clear();
+            config.load(input);
+            LOGGER.info("Configuration reloaded.");
+        } catch (IOException e) {
+            LOGGER.error("Error reloading the configuration file", e);
+        }
+    }
+
+    /**
      * Gets the property value for the given key.
      *
      * @param key The key to retrieve the value for.

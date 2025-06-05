@@ -127,6 +127,13 @@ public class ConfigurationCommand {
                             return 1;
                         })
                 )
+                .then(CommandManager.literal("reload")
+                        .executes(context -> {
+                            ConfigLoader.reloadConfig();
+                            context.getSource().sendFeedback(() -> Text.of("Blocketing config reloaded."), true);
+                            return 1;
+                        })
+                )
         );
     }
 }
