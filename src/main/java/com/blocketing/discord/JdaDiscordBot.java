@@ -114,6 +114,24 @@ public class JdaDiscordBot {
     }
 
     /**
+     * Gets the JDA instance for interacting with Discord.
+     *
+     * @return The JDA instance, or null if not initialized.
+     */
+    public static void stop() {
+        if (jda != null) {
+            jda.shutdownNow();
+            jda = null;
+            LOGGER.info("JDA Discord Bot stopped.");
+        }
+    }
+
+    public static void restart() {
+        stop();
+        start();
+    }
+
+    /**
      * Checks if the given string is a valid Discord snowflake ID.
      *
      * @param id The string to check.

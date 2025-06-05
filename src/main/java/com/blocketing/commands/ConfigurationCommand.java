@@ -1,6 +1,7 @@
 package com.blocketing.commands;
 
 import com.blocketing.config.ConfigLoader;
+import com.blocketing.discord.JdaDiscordBot;
 import com.blocketing.events.MinecraftChatHandler;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -130,7 +131,8 @@ public class ConfigurationCommand {
                 .then(CommandManager.literal("reload")
                         .executes(context -> {
                             ConfigLoader.reloadConfig();
-                            context.getSource().sendFeedback(() -> Text.of("Blocketing config reloaded."), true);
+                            JdaDiscordBot.restart();
+                            context.getSource().sendFeedback(() -> Text.of("Blocketing config and Discord bot reloaded."), true);
                             return 1;
                         })
                 )
