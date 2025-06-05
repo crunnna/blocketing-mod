@@ -8,8 +8,8 @@
 		"crunnna"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://github.com/crunnna",
+		"sources": "https://github.com/crunnna/blocketing-fabric-mod"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/blocketing/icon.png",
@@ -17,18 +17,8 @@
 	"entrypoints": {
 		"main": [
 			"com.blocketing.Blocketing"
-		],
-		"client": [
-			"com.blocketing.BlocketingClient"
 		]
 	},
-	"mixins": [
-		"blocketing.mixins.json",
-		{
-			"config": "blocketing.client.mixins.json",
-			"environment": "client"
-		}
-	],
 	"depends": {
 		"fabricloader": ">=0.16.14",
 		"minecraft": "~1.21.5",
