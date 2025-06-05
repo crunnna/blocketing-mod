@@ -1,4 +1,4 @@
-package com.blocketing;
+package com.blocketing.commands;
 
 import com.blocketing.config.ConfigLoader;
 import com.blocketing.events.MinecraftChatHandler;

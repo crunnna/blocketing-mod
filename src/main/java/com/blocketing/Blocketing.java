@@ -1,5 +1,6 @@
 package com.blocketing;
 
+import com.blocketing.commands.ConfigurationCommand;
 import com.blocketing.discord.JdaDiscordBot;
 import com.blocketing.events.MinecraftChatHandler;
 import com.blocketing.events.PlayerEventHandler;
