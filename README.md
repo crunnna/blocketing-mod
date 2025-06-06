@@ -10,6 +10,15 @@
 [![Modrinth downloads](https://img.shields.io/modrinth/dt/WQAfq7OC?label=Modrinth%20downloads&logo=modrinth)](https://modrinth.com/mod/blocketing)
 [![GitHub downloads](https://img.shields.io/github/downloads/crunnna/blocketing-fabric-mod/total?label=Github%20downloads&logo=github)](https://github.com/crunnna/blocketing-fabric-mod/releases)
 
+<div align="center">
+  <img src="https://raw.githubusercontent.com/crunnna/blocketing-fabric-mod/main/src/main/resources/assets/blocketing/screenshots/Blocketing_Screenshot1.png" width="600" alt="Minecraft chat with Discord integration"/>
+  <br><br>
+  <img src="https://raw.githubusercontent.com/crunnna/blocketing-fabric-mod/main/src/main/resources/assets/blocketing/screenshots/Blocketing_Screenshot2.png" width="600" alt="Discord channel with Minecraft events"/>
+  <br><br>
+  <img src="https://raw.githubusercontent.com/crunnna/blocketing-fabric-mod/main/src/main/resources/assets/blocketing/screenshots/Blocketing_Screenshot3.png" width="600" alt="Discord-Channel with Minecraft events & status"/>
+</div>
+
+
 </center></div>
 
 ---
