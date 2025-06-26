@@ -63,18 +63,6 @@ public class MinecraftChatHandler {
     }
 
     /**
-     * Sends a message to all players in the Minecraft chat.
-     * @param minecraftServer The Minecraft server.
-     * @param username The username to mention in the message.
-     * @param content The content of the message.
-     */
-    public static void sendMessageToAllPlayers(MinecraftServer minecraftServer, String username, String content) {
-        for (ServerPlayerEntity player : minecraftServer.getPlayerManager().getPlayerList()) {
-            player.sendMessage(Text.of("<@DC_" + username + "> " + content), false);
-        }
-    }
-
-    /**
      * Sends a message to Discord-Bot when the server starts.
      */
     public static void sendServerStartMessage(String serverName) {
