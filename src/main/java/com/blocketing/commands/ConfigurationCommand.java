@@ -132,7 +132,7 @@ public class ConfigurationCommand {
                                 })
                         )
                         .executes(context -> {
-                            context.getSource().sendFeedback(() -> Text.of("Available toggles: advancements, deaths, player_chat_mode"), true);
+                            context.getSource().sendFeedback(() -> Text.of("Available toggles: advancements, deaths, player_chat_mode, update-info"), true);
                             return 1;
                         })
                 )
