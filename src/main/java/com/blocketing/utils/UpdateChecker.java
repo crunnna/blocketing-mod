@@ -36,8 +36,15 @@ public class UpdateChecker {
         String latest = fetchLatestVersion();
         String current = ConfigLoader.getProperty("mod_version");
         if (latest != null && !latest.equals(current)) {
-            String msg = "A new Blocketing version (" + latest + ") is available! See the changelog: " + CHANGELOG_URL;
-            JdaDiscordBot.sendEmbedToDiscord("Update Available", msg, 0xFF0000, null);
+            String msg = "**A new Blocketing version (`"+ latest +"`) is available!**\n"
+                    + "[View Changelog](https://github.com/crunnna/blocketing-fabric-mod/releases/latest)";
+            String logoUrl = "https://raw.githubusercontent.com/crunnna/blocketing-fabric-mod/main/src/main/resources/assets/blocketing/icon.png";
+            JdaDiscordBot.sendEmbedToDiscord(
+                    "\uD83C\uDD95 Update Available",
+                    msg,
+                    0xFF0000,
+                    logoUrl // Only thumbnail supported
+            );
         }
     }
 
