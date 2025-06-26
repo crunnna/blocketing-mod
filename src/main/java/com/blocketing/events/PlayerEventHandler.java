@@ -7,7 +7,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 
 /**
- * This class would be responsible for handling player events like join and disconnect events.
+ * This class is responsible for handling player events like join and disconnect events.
  */
 public class PlayerEventHandler {
 
