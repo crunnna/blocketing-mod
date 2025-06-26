@@ -1,6 +1,7 @@
 package com.blocketing.events;
 
 import com.blocketing.discord.JdaDiscordBot;
+import com.blocketing.utils.UpdateChecker;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.server.MinecraftServer;
@@ -28,6 +29,8 @@ public class PlayerEventHandler {
         String avatarUrl = "https://api.mineatar.io/face/" + playerUUID + "?scale=8"; // Get the player's avatar    (scale= (4=mini, 8=normal, 12=big))
 
         JdaDiscordBot.sendEmbedToDiscord("Player Joined", "**" + playerName + "** joined the server.", 0x00FF00, avatarUrl); // Green-colored embed
+
+        UpdateChecker.checkForUpdateAndNotifyOperator(handler.getPlayer());
     }
 
     /**

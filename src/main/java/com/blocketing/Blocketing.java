@@ -4,6 +4,7 @@ import com.blocketing.commands.ConfigurationCommand;
 import com.blocketing.discord.JdaDiscordBot;
 import com.blocketing.events.MinecraftChatHandler;
 import com.blocketing.events.PlayerEventHandler;
+import com.blocketing.utils.UpdateChecker;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -56,6 +57,7 @@ public class Blocketing implements ModInitializer {
 		LOGGER.info("Server has started.");
 		minecraftServer = server;
 		MinecraftChatHandler.sendServerStartMessage(minecraftServer.getServerMotd()); // Sends a server start message to the Discord-Bot
+		UpdateChecker.checkForUpdateAndNotifyDiscord(server);
 	}
 
 	/**

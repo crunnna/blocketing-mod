@@ -123,6 +123,14 @@ public class ConfigurationCommand {
                                     return 1;
                                 })
                         )
+                        .then(CommandManager.literal("update-info")
+                                .executes(context -> {
+                                    boolean enabled = !ConfigLoader.getBooleanProperty("UPDATE_INFO_ENABLED", true);
+                                    ConfigLoader.setProperty("UPDATE_INFO_ENABLED", String.valueOf(enabled));
+                                    context.getSource().sendFeedback(() -> Text.of("Update info notifications are now " + (enabled ? "enabled" : "disabled") + "."), true);
+                                    return 1;
+                                })
+                        )
                         .executes(context -> {
                             context.getSource().sendFeedback(() -> Text.of("Available toggles: advancements, deaths, player_chat_mode"), true);
                             return 1;
