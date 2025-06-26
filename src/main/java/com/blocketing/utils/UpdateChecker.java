@@ -4,11 +4,15 @@ import com.blocketing.config.ConfigLoader;
 import com.blocketing.discord.JdaDiscordBot;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.util.Scanner;
 
@@ -42,15 +46,52 @@ public class UpdateChecker {
      *
      * @param player The player who has permission to check for updates.
      */
+
     public static void checkForUpdateAndNotifyOperator(ServerPlayerEntity player) {
-        if (player.hasPermissionLevel(4) && com.blocketing.config.ConfigLoader.getBooleanProperty("UPDATE_INFO_ENABLED", true)) {
-            String latest = fetchLatestVersion();
-            String current = ConfigLoader.getProperty("mod_version");
-            if (latest != null && !latest.equals(current)) {
-                String msg = "A new Blocketing version (" + latest + ") is available! See the changelog: " + CHANGELOG_URL;
-                player.sendMessage(Text.of(msg), false);
-                player.sendMessage(Text.of("Tip: Use /blocketing toggle update-info to enable/disable this notification."), false);
-            }
+        if (!player.hasPermissionLevel(4) ||
+                !ConfigLoader.getBooleanProperty("UPDATE_INFO_ENABLED", true)) {
+            return;
+        }
+
+        String latest = fetchLatestVersion();
+        String current = ConfigLoader.getProperty("mod_version");
+        if (latest != null && !latest.equals(current)) {
+
+            Text prefix = Text.literal("[Blocketing] ")
+                    .setStyle(Style.EMPTY.withColor(Formatting.RED).withBold(true));
+
+            Text newVersion = Text.literal("New version ")
+                    .setStyle(Style.EMPTY.withColor(Formatting.WHITE).withBold(false));
+
+            Text version = Text.literal(latest)
+                    .setStyle(Style.EMPTY.withColor(Formatting.GREEN).withBold(true).withUnderline(true));
+
+            Text available = Text.literal(" available!  ")
+                    .setStyle(Style.EMPTY.withColor(Formatting.WHITE).withBold(false));
+
+            Text changelogLink = Text.literal("→ Changelog")
+                    .setStyle(Style.EMPTY
+                            .withColor(Formatting.WHITE)
+                            .withUnderline(true)
+                            .withClickEvent(new ClickEvent.OpenUrl(URI.create(CHANGELOG_URL)))
+                    );
+
+            // Append the version information and changelog link
+            Text fullMessage = prefix
+                    .copy()
+                    .append(newVersion)
+                    .append(version)
+                    .append(available)
+                    .append(changelogLink);
+
+            player.sendMessage(fullMessage, false);
+
+            // Additional tip for toggling update notifications
+            player.sendMessage(
+                    Text.literal("Tip: Use /blocketing toggle update-info to enable/disable this notification.")
+                            .styled(s -> s.withColor(Formatting.GRAY).withItalic(true)),
+                    false
+            );
         }
     }
 
