@@ -80,6 +80,7 @@
 > /blocketing toggle advancements   # Toggle the sending of advancements to Discord.
 > /blocketing toggle deaths   # Toggle the sending of death messages to Discord.
 > /blocketing toggle player_chat_mode   # Toggle player chat via Discord webhook (player name/avatar in Discord).
+> /blocketing toggle update-info   # Toggle update notifications.
 > ```
 
 ### ♻️ Reload Config
