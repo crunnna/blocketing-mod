@@ -33,9 +33,9 @@ public class UpdateChecker {
      */
     public static void checkForUpdateAndNotifyDiscord(MinecraftServer server) {
         if (!ConfigLoader.getBooleanProperty("UPDATE_INFO_ENABLED", true)) return;
-        String latest = fetchLatestVersion();
-        String current = ConfigLoader.getProperty("mod_version");
-        if (latest != null && !latest.equals(current)) {
+        String latest = normalizeVersion(fetchLatestVersion());
+        String current = normalizeVersion(ConfigLoader.getProperty("mod_version"));
+        if (latest != null && current != null && !latest.equals(current)) {
             String msg = "**A new Blocketing version (`"+ latest +"`) is available!**\n"
                     + "[View Changelog](https://github.com/crunnna/blocketing-fabric-mod/releases/latest)";
             String logoUrl = "https://raw.githubusercontent.com/crunnna/blocketing-fabric-mod/main/src/main/resources/assets/blocketing/icon.png";
@@ -43,7 +43,7 @@ public class UpdateChecker {
                     "\uD83C\uDD95 Update Available",
                     msg,
                     0xFF0000,
-                    logoUrl // Only thumbnail supported
+                    logoUrl
             );
         }
     }
@@ -60,9 +60,9 @@ public class UpdateChecker {
             return;
         }
 
-        String latest = fetchLatestVersion();
-        String current = ConfigLoader.getProperty("mod_version");
-        if (latest != null && !latest.equals(current)) {
+        String latest = normalizeVersion(fetchLatestVersion());
+        String current = normalizeVersion(ConfigLoader.getProperty("mod_version"));
+        if (latest != null && current != null && !latest.equals(current)) {
 
             Text prefix = Text.literal("[Blocketing] ")
                     .setStyle(Style.EMPTY.withColor(Formatting.RED).withBold(true));
@@ -116,10 +116,21 @@ public class UpdateChecker {
             while (scanner.hasNext()) json.append(scanner.nextLine());
             scanner.close();
             String tag = json.toString().split("\"tag_name\":\"")[1].split("\"")[0];
-            return tag.replaceFirst("^v", "");
+            return tag.trim();
         } catch (Exception e) {
             LOGGER.warn("Could not check for updates", e);
             return null;
         }
+    }
+
+    /**
+     * Normalizes the version string by removing leading 'v' and trimming whitespace.
+     *
+     * @param version The version string to normalize.
+     * @return The normalized version string, or null if the input is null.
+     */
+    private static String normalizeVersion(String version) {
+        if (version == null) return null;
+        return version.trim().replaceFirst("^v", "");
     }
 }
