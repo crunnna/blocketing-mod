@@ -2,6 +2,8 @@ package com.blocketing.utils;
 
 import com.blocketing.config.ConfigLoader;
 import com.blocketing.discord.JdaDiscordBot;
+import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.ClickEvent;
@@ -14,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
+import java.util.Optional;
 import java.util.Scanner;
 
 /**
@@ -25,6 +28,13 @@ public class UpdateChecker {
     private static final String GITHUB_API_URL = "https://api.github.com/repos/crunnna/blocketing-fabric-mod/releases/latest";
     private static final String CHANGELOG_URL = "https://github.com/crunnna/blocketing-fabric-mod/releases/latest";
 
+    /**
+     * Gets the current mod version from Fabric mod metadata.
+     */
+    public static String getCurrentModVersion() {
+        Optional<ModContainer> mod = FabricLoader.getInstance().getModContainer("blocketing");
+        return mod.map(m -> m.getMetadata().getVersion().getFriendlyString()).orElse("unknown");
+    }
 
     /**
      * Checks for the latest version of the Blocketing mod and notifies Discord if an update is available.
@@ -34,7 +44,7 @@ public class UpdateChecker {
     public static void checkForUpdateAndNotifyDiscord(MinecraftServer server) {
         if (!ConfigLoader.getBooleanProperty("UPDATE_INFO_ENABLED", true)) return;
         String latest = normalizeVersion(fetchLatestVersion());
-        String current = normalizeVersion(ConfigLoader.getProperty("mod_version"));
+        String current = normalizeVersion(getCurrentModVersion());
         if (latest != null && current != null && !latest.equals(current)) {
             String msg = "**A new Blocketing version (`"+ latest +"`) is available!**\n"
                     + "[View Changelog](https://github.com/crunnna/blocketing-fabric-mod/releases/latest)";
@@ -53,7 +63,6 @@ public class UpdateChecker {
      *
      * @param player The player who has permission to check for updates.
      */
-
     public static void checkForUpdateAndNotifyOperator(ServerPlayerEntity player) {
         if (!player.hasPermissionLevel(4) ||
                 !ConfigLoader.getBooleanProperty("UPDATE_INFO_ENABLED", true)) {
@@ -61,7 +70,7 @@ public class UpdateChecker {
         }
 
         String latest = normalizeVersion(fetchLatestVersion());
-        String current = normalizeVersion(ConfigLoader.getProperty("mod_version"));
+        String current = normalizeVersion(getCurrentModVersion());
         if (latest != null && current != null && !latest.equals(current)) {
 
             Text prefix = Text.literal("[Blocketing] ")
