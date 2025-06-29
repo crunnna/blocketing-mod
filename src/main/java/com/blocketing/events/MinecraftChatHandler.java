@@ -2,7 +2,7 @@ package com.blocketing.events;
 
 import com.blocketing.config.ConfigLoader;
 import com.blocketing.discord.JdaDiscordBot;
-import com.blocketing.discord.WebhookSender;
+import com.blocketing.discord.util.WebhookSender;
 import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
 import net.minecraft.network.message.MessageType;
 import net.minecraft.network.message.SignedMessage;
@@ -11,44 +11,52 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
 /**
- * This class is responsible for monitoring Minecraft chat messages and sending them to Discord.
+ * Handles Minecraft chat, advancement, and death messages,
+ * and relays them to Discord using the configured integration.
  */
 public class MinecraftChatHandler {
 
-    private static boolean advancementsEnabled = ConfigLoader.getBooleanProperty("ADVANCEMENTS_ENABLED", true);
-    private static boolean deathsEnabled = ConfigLoader.getBooleanProperty("DEATHS_ENABLED", true);
+    private static boolean advancementsEnabled = ConfigLoader.getBooleanProperty("ADVANCEMENTS_ENABLED", true); // Whether advancement messages should be sent to Discord.
+    private static boolean deathsEnabled = ConfigLoader.getBooleanProperty("DEATHS_ENABLED", true); // Whether death messages should be sent to Discord.
 
     /**
-     * Registers the event handlers for chat messages, player join, and player disconnect events.
+     * Registers event handlers for chat and game messages.
+     * Should be called during server initialization.
      */
     public static void register() {
+        // Register chat and game message event listeners
         ServerMessageEvents.CHAT_MESSAGE.register(MinecraftChatHandler::onChatMessage);
         ServerMessageEvents.GAME_MESSAGE.register(MinecraftChatHandler::onGameMessage);
     }
 
     /**
-     * This method is called when a chat message is sent.
-     * @param message The chat message.
-     * @param sender The player who sent the message.
-     * @param parameters The parameters of the message.
+     * Called when a player sends a chat message.
+     * Relays the message to Discord, optionally using a webhook.
+     *
+     * @param message    The signed chat message.
+     * @param sender     The player who sent the message.
+     * @param parameters Message parameters (unused).
      */
     public static void onChatMessage(SignedMessage message, ServerPlayerEntity sender, MessageType.Parameters parameters) {
-        String playerName = sender.getGameProfile().getName();
-        String playerUUID = sender.getGameProfile().getId().toString();
-        String chatMessage = message.getContent().getString();
-        boolean webhookMode = ConfigLoader.getBooleanProperty("WEBHOOK_CHAT_ENABLED", false);
+        final String playerName = sender.getGameProfile().getName();
+        final String playerUUID = sender.getGameProfile().getId().toString();
+        final String chatMessage = message.getContent().getString();
+        final boolean webhookMode = ConfigLoader.getBooleanProperty("WEBHOOK_CHAT_ENABLED", false);
 
         if (webhookMode) {
+            // Use a player avatar for the webhook
             String avatarUrl = "https://api.mineatar.io/face/" + playerUUID + "?scale=8";
             WebhookSender.send(playerName, avatarUrl, chatMessage);
         } else {
+            // Send as a plain message via the bot
             JdaDiscordBot.sendMessageToDiscord("**[" + playerName + "]** " + chatMessage);
         }
     }
 
     /**
-     * Handles game messages.
-     * @param server The Minecraft server.
+     * Handles game messages such as deaths and advancements.
+     *
+     * @param server  The Minecraft server instance.
      * @param message The game message.
      * @param overlay Whether the message should overlay the previous message.
      */
@@ -63,7 +71,9 @@ public class MinecraftChatHandler {
     }
 
     /**
-     * Sends a message to Discord-Bot when the server starts.
+     * Sends a Discord embed when the server starts.
+     *
+     * @param serverName The name of the server.
      */
     public static void sendServerStartMessage(String serverName) {
         String placeholderUrl = "https://example.com/placeholder.png";
@@ -71,7 +81,7 @@ public class MinecraftChatHandler {
     }
 
     /**
-     * Sends a message to Discord-Bot when the server stops.
+     * Sends a Discord embed when the server stops.
      */
     public static void sendServerStopMessage() {
         String placeholderUrl = "https://example.com/placeholder.png";
@@ -79,12 +89,13 @@ public class MinecraftChatHandler {
     }
 
     /**
-     * Checks if a message is a death message.
+     * Checks if a message is a death message by matching known keywords.
+     *
      * @param message The message to check.
-     * @return True if the message is a death message, false otherwise.
+     * @return True if the message is a death message.
      */
     private static boolean isDeathMessage(String message) {
-        String[] deathKeywords = {
+        final String[] deathKeywords = {
                 "died", "was slain", "fell", "was shot", "tried to swim",
                 "was blown up", "was killed", "was burnt", "hit the ground",
                 "was impaled", "was squashed", "was poked", "drowned",
@@ -128,15 +139,17 @@ public class MinecraftChatHandler {
     }
 
     /**
-     * Handles a death message.
+     * Handles formatting and sending a death message to Discord.
+     *
      * @param message The death message.
      */
     private static void handleDeathMessage(String message) {
-        int playerNameEndIndex = message.indexOf(" ");
-        String playerName = message.substring(0, playerNameEndIndex).trim();
-        String deathMessage = message.substring(playerNameEndIndex).trim();
-        String formattedMessage = "**" + playerName + "** " + deathMessage;
-        JdaDiscordBot.sendEmbedToDiscord("💀 Player Death", formattedMessage, 0x000000, null); // Black-colored embed
+        final int playerNameEndIndex = message.indexOf(" ");
+        if (playerNameEndIndex <= 0) return; // Edge case: malformed message
+        final String playerName = message.substring(0, playerNameEndIndex).trim();
+        final String deathMessage = message.substring(playerNameEndIndex).trim();
+        final String formattedMessage = "**" + playerName + "** " + deathMessage;
+        JdaDiscordBot.sendEmbedToDiscord("💀 Player Death", formattedMessage, 0x000000, null);
     }
 
     /**
@@ -151,8 +164,9 @@ public class MinecraftChatHandler {
     }
 
     /**
-     * Sends a message to Discord-Bot when an advancement is made.
-     * @param message The message to send.
+     * Handles formatting and sending an advancement message to Discord.
+     *
+     * @param message The advancement message.
      */
     private static void handleAdvancementMessage(String message) {
         String playerName;
@@ -184,7 +198,7 @@ public class MinecraftChatHandler {
     }
 
     /**
-     * Toggles the advancementsEnabled flag.
+     * Toggles whether advancement messages are sent to Discord.
      */
     public static void toggleAdvancementsEnabled() {
         advancementsEnabled = !advancementsEnabled;
@@ -192,15 +206,14 @@ public class MinecraftChatHandler {
     }
 
     /**
-     * Gets the status of the advancementsEnabled flag.
-     * @return The status of the advancementsEnabled flag.
+     * @return True if advancement messages are enabled.
      */
     public static boolean isAdvancementsEnabled() {
         return advancementsEnabled;
     }
 
     /**
-     * Toggles the deathsEnabled flag.
+     * Toggles whether death messages are sent to Discord.
      */
     public static void toggleDeathsEnabled() {
         deathsEnabled = !deathsEnabled;
@@ -208,8 +221,7 @@ public class MinecraftChatHandler {
     }
 
     /**
-     * Gets the status of the deathsEnabled flag.
-     * @return The status of the deathsEnabled flag.
+     * @return True if death messages are enabled.
      */
     public static boolean isDeathsEnabled() {
         return deathsEnabled;

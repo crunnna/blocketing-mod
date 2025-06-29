@@ -1,4 +1,4 @@
-package com.blocketing.discord;
+package com.blocketing.discord.util;
 
 import com.blocketing.config.ConfigLoader;
 import org.slf4j.Logger;

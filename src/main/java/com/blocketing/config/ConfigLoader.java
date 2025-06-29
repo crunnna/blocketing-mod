@@ -11,32 +11,37 @@ import java.nio.file.Paths;
 import java.util.Properties;
 
 /**
- * This class is responsible for loading and saving the configuration for the blocketing-mod.
+ * Utility class responsible for loading, saving, and managing the configuration for the blocketing-mod.
+ * <p>
+ * This class should not be instantiated.
  */
-public class ConfigLoader {
+public final class ConfigLoader {
     private static final Logger LOGGER = LoggerFactory.getLogger("Blocketing|Config");
 
+    // Holds the loaded configuration properties
     private static final Properties config = new Properties();
     private static final String CONFIG_PATH = "config/blocketing.properties";
 
+    // Static initializer to load configuration at class load time
     static { loadConfig(); }
 
     /**
      * Loads the configuration from the 'blocketing.properties' file.
+     * Creates the config directory and file if they do not exist.
      */
     private static void loadConfig() {
         try {
-            // Checks whether the ‘config’ directory exists and creates it if necessary
+            // Ensure the 'config' directory exists
             if (!Files.exists(Paths.get("config"))) {
                 Files.createDirectories(Paths.get("config"));
                 LOGGER.info("Configuration directory created at config");
             }
-            // Checks whether the configuration file exists and creates it if necessary
+            // Ensure the configuration file exists
             if (!Files.exists(Paths.get(CONFIG_PATH))) {
                 Files.createFile(Paths.get(CONFIG_PATH));
                 LOGGER.info("Configuration file created at {}", CONFIG_PATH);
             }
-            // Loads the configuration file
+            // Load properties from the configuration file
             try (InputStream input = Files.newInputStream(Paths.get(CONFIG_PATH))) {
                 config.load(input);
             }
@@ -51,10 +56,10 @@ public class ConfigLoader {
      * @param logger The logger to log warnings if the configuration is invalid.
      * @return true if the configuration is valid, false otherwise.
      */
-    public static boolean isDiscordConfigValid(Logger logger) {
-        String token = getProperty("BOT_TOKEN");
-        String guildId = getProperty("GUILD_ID");
-        String channelId = getProperty("CHANNEL_ID");
+    public static boolean isDiscordConfigValid(final Logger logger) {
+        final String token = getProperty("BOT_TOKEN");
+        final String guildId = getProperty("GUILD_ID");
+        final String channelId = getProperty("CHANNEL_ID");
 
         if (token == null || token.isBlank()) {
             logger.warn("BOT_TOKEN is not set! Discord integration will be disabled.");
@@ -72,7 +77,7 @@ public class ConfigLoader {
     }
 
     /**
-     * Reloads the configuration from the file.
+     * Reloads the configuration from the file, replacing all current properties.
      */
     public static void reloadConfig() {
         try (InputStream input = Files.newInputStream(Paths.get(CONFIG_PATH))) {
@@ -90,7 +95,7 @@ public class ConfigLoader {
      * @param key The key to retrieve the value for.
      * @return The value of the key, or null if not found.
      */
-    public static String getProperty(String key) {
+    public static String getProperty(final String key) {
         return config.getProperty(key);
     }
 
@@ -101,18 +106,18 @@ public class ConfigLoader {
      * @param defaultValue The default value to return if the key is not found.
      * @return The boolean value of the key, or the default value if not found.
      */
-    public static boolean getBooleanProperty(String key, boolean defaultValue) {
-        String value = config.getProperty(key);
+    public static boolean getBooleanProperty(final String key, final boolean defaultValue) {
+        final String value = config.getProperty(key);
         return value != null ? Boolean.parseBoolean(value) : defaultValue;
     }
 
     /**
-     * Sets the property value for the given key.
+     * Sets the property value for the given key and saves the configuration.
      *
      * @param key The key to set the value for.
      * @param value The value to set.
      */
-    public static void setProperty(String key, String value) {
+    public static void setProperty(final String key, final String value) {
         config.setProperty(key, value);
         saveConfig();
     }
