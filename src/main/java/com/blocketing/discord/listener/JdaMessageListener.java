@@ -1,4 +1,4 @@
-package com.blocketing.discord;
+package com.blocketing.discord.listener;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -19,11 +19,12 @@ public class JdaMessageListener extends ListenerAdapter {
      */
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-        if (event.getAuthor().isBot()) return;
+        if (event.getAuthor().isBot()) return; // Ignore messages from bots
         String channelId = ConfigLoader.getProperty("CHANNEL_ID");
-        if (!event.getChannel().getId().equals(channelId)) return;
-        if (!event.getMessage().getAttachments().isEmpty() || !event.getMessage().getEmbeds().isEmpty()) return;
+        if (!event.getChannel().getId().equals(channelId)) return; // Check if the message is in the configured channel
+        if (!event.getMessage().getAttachments().isEmpty() || !event.getMessage().getEmbeds().isEmpty()) return; // Ignore messages with attachments or embeds
 
+        // Get the Minecraft server instance
         MinecraftServer server = Blocketing.getMinecraftServer();
         if (server != null) {
             String username = event.getAuthor().getName();
@@ -44,17 +45,21 @@ public class JdaMessageListener extends ListenerAdapter {
                     .append(net.minecraft.text.Text.literal("] ")
                             .styled(style -> style.withColor(net.minecraft.util.Formatting.BLUE)));
 
+            // Create user text with color
             net.minecraft.text.Text user = net.minecraft.text.Text.literal("<" + username + ">")
                     .styled(style -> style.withColor(mcRoleColor));
 
+            // Create message text with white color
             net.minecraft.text.Text msg = net.minecraft.text.Text.literal(" " + content)
                     .styled(style -> style.withColor(net.minecraft.util.Formatting.WHITE));
 
+            // Combine all parts into a full message
             net.minecraft.text.Text full = net.minecraft.text.Text.empty()
                     .append(prefix)
                     .append(user)
                     .append(msg);
 
+            // Send the message to the Minecraft server's chat
             for (net.minecraft.server.network.ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
                 player.sendMessage(full, false);
             }

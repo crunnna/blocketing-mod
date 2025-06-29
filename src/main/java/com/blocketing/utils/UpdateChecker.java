@@ -45,6 +45,8 @@ public class UpdateChecker {
         if (!ConfigLoader.getBooleanProperty("UPDATE_INFO_ENABLED", true)) return;
         String latest = normalizeVersion(fetchLatestVersion());
         String current = normalizeVersion(getCurrentModVersion());
+
+        // Compares the current version with the latest version
         if (latest != null && current != null && !latest.equals(current)) {
             String msg = "**A new Blocketing version (`"+ latest +"`) is available!**\n"
                     + "[View Changelog](https://github.com/crunnna/blocketing-fabric-mod/releases/latest)";
@@ -64,6 +66,7 @@ public class UpdateChecker {
      * @param player The player who has permission to check for updates.
      */
     public static void checkForUpdateAndNotifyOperator(ServerPlayerEntity player) {
+        // Only notify players with permission level 4 (OP) and if update notifications are enabled
         if (!player.hasPermissionLevel(4) ||
                 !ConfigLoader.getBooleanProperty("UPDATE_INFO_ENABLED", true)) {
             return;
@@ -117,15 +120,20 @@ public class UpdateChecker {
      * @return The latest version as a String, or null if an error occurs.
      */
     private static String fetchLatestVersion() {
+        // Fetches the latest release information from GitHub API
         try {
             HttpURLConnection conn = (HttpURLConnection) new URL(GITHUB_API_URL).openConnection();
             conn.setRequestProperty("Accept", "application/vnd.github+json");
-            Scanner scanner = new Scanner(conn.getInputStream());
-            StringBuilder json = new StringBuilder();
-            while (scanner.hasNext()) json.append(scanner.nextLine());
-            scanner.close();
-            String tag = json.toString().split("\"tag_name\":\"")[1].split("\"")[0];
-            return tag.trim();
+
+            // try-with-resources for automatic closing of the scanner
+            try (Scanner scanner = new Scanner(conn.getInputStream())) {
+                StringBuilder json = new StringBuilder();
+                while (scanner.hasNext()) json.append(scanner.nextLine());
+
+                // Extracts the tag_name field from the JSON
+                String tag = json.toString().split("\"tag_name\":\"")[1].split("\"")[0];
+                return tag.trim();
+            }
         } catch (Exception e) {
             LOGGER.warn("Could not check for updates", e);
             return null;
@@ -140,6 +148,7 @@ public class UpdateChecker {
      */
     private static String normalizeVersion(String version) {
         if (version == null) return null;
+        // Removes leading 'v' and trims whitespace
         return version.trim().replaceFirst("^v", "");
     }
 }
