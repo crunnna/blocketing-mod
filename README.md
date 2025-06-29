@@ -29,7 +29,7 @@
 - [Permissions](#-permissions)
 - [Configuration](#-configuration-commands)
 - [Player-Chat Webhook Mode](#-player-chat-webhook-mode)
-- [Need Help?](#-need-help-feel-free-to-ask-questions-or-open-an-issue)
+- [Need Help?](#-need-help)
 
 ---
 
@@ -41,61 +41,99 @@
 - ✅ Run Minecraft commands from Discord (permission-based) 🛠️
 - ✅ Player chat webhook mode (with avatar & name) 👨
 - ✅ In-game configuration via commands 🎮
+- ✅ Update notifications for new mod versions 🔔
+- ✅ Paginated player list and server status via Discord slash commands 📊
 
 ---
 
 ## 🚀 Installation
 ### 🔨 1. Install the Mod
-1️⃣ **Download the latest .jar** from the [Releases Page](https://github.com/crunnna/blocketing-fabric-mod/releases).  
-2️⃣ **Place the `.jar` file in your server’s `mods/` folder**.
-3️⃣ **Start the Minecraft server** with **Fabric**.
-4️⃣ **Configure the bot** using the in-game commands (see below).  
+1. **Download the latest .jar** from the [Releases Page](https://github.com/crunnna/blocketing-fabric-mod/releases).
+2. **Place the `.jar` file in your server’s `mods/` folder**.
+3. **Start the Minecraft server** with **Fabric**.
+4. **Configure the bot** using the in-game commands (see below).
 
 ### 🤖 2. Set up the Discord Bot
 - **Create a new Discord bot application** in the **[Discord Developer Portal](https://discord.com/developers/applications)**.
-- **Add** the bot to your Discord server. 
+- **Add** the bot to your Discord server.
 - **Copy** the **`bot token`** for later configuration.
-
 
 ---
 
 ## 🛡️ Permissions
 - **Minecraft**: `/blocketing` commands require permission **level 4 (OP)**.
-- **Discord**: For `/command` via Discord, the user must have the configured **OP role** (if set).
-
-
-## ⚙️ Configuration Commands
-### 🎮 In-Game Setup
-
-| Command                                | Required | Description                                             |
-|----------------------------------------|----------|---------------------------------------------------------|
-| /blocketing setup token <token>        | Yes      | Set your Discord bot token                              |
-| /blocketing setup channel <channel_id> | Yes      | Set the Discord channel ID for message sync             |
-| /blocketing setup guild <guild_id>     | Yes      | Set the Discord guild (server) ID                       |
-| /blocketing setup op_role <role_id>    | No       | Set Discord role for command permissions                |
-| /blocketing setup webhook_url <url>    | No       | Set webhook URL for player chat mode                    |
-
-### 🔄 Toggle Features
-> ```sh
-> /blocketing toggle advancements   # Toggle the sending of advancements to Discord.
-> /blocketing toggle deaths   # Toggle the sending of death messages to Discord.
-> /blocketing toggle player_chat_mode   # Toggle player chat via Discord webhook (player name/avatar in Discord).
-> /blocketing toggle update-info   # Toggle update notifications.
-> ```
-
-### ♻️ Reload Config
-> ```sh
-> /blocketing reload   # Reload the configuration without restarting the server.
-> ```
-
---- 
-
-### 📝 Player Chat Webhook Mode
-- When player_chat_mode is enabled, Minecraft chat messages are sent to Discord using a webhook, showing the player's name and avatar.
-- When disabled, messages are sent using the standard bot identity. 
-- Join/leave and server messages always use the bot.
+- **Discord**: For `/console` via Discord, the user must have the configured **OP role** (if set).
 
 ---
 
-### 📌 Need help? Feel free to ask questions or open an issue!
-[![GitHub Issues](https://img.shields.io/github/issues/crunnna/blocketing-fabric-mod?logo=github&label=GitHub%20Issues)](https://github.com/crunnna/blocketing-fabric-mod/issues)
+## ⚙️ Configuration Commands
+
+All configuration is done in-game using `/blocketing` commands (OP only):
+
+### Setup Discord Integration
+
+- `/blocketing setup token <token>`  
+  Set the Discord bot token.
+- `/blocketing setup guild <guild_id>`  
+  Set the Discord server (guild) ID.
+- `/blocketing setup channel <channel_id>`  
+  Set the Discord channel ID for message sync.
+- `/blocketing setup op_role <role_id>`  
+  Set the Discord role ID required to run `/console` from Discord.
+- `/blocketing setup webhook_url <url>`  
+  Set the Discord webhook URL for player chat webhook mode.
+- `/blocketing setup`  
+  List available setup commands.
+
+### Feature Toggles
+
+- `/blocketing toggle advancements`  
+  Enable/disable sending advancement messages to Discord.
+- `/blocketing toggle deaths`  
+  Enable/disable sending death messages to Discord.
+- `/blocketing toggle player_chat_mode`  
+  Enable/disable player chat webhook mode (uses webhook for chat, with player avatar and name).
+- `/blocketing toggle update-info`  
+  Enable/disable update notifications for new mod versions.
+- `/blocketing toggle`  
+  List available toggles.
+
+### Other Commands
+
+- `/blocketing reload`  
+  Reload the configuration and restart the Discord bot.
+
+---
+
+## 👥 Discord Slash Commands
+
+- `/status`  
+  Show server status (TPS, MSPT, CPU, RAM, uptime, version).
+- `/players`  
+  Show online players (paginated, with navigation buttons).
+- `/console <command>`  
+  Run a Minecraft command from Discord (requires OP role if set).
+
+---
+
+## 💬 Player-Chat Webhook Mode
+
+When enabled, Minecraft chat messages are sent to Discord using a webhook, displaying the player's name and avatar.  
+To enable, set a webhook URL and use `/blocketing toggle player_chat_mode`.
+
+---
+
+## 🔔 Notifications
+
+- **Join/Leave**: Player join/leave events are announced in Discord with player avatars.
+- **Advancements/Deaths**: Advancement and death messages can be toggled.
+- **Server Start/Stop**: Server start/stop events are announced in Discord.
+- **Update Info**: OPs and Discord can be notified when a new mod version is available.
+
+---
+
+## ❓ Need Help?
+
+Feel free to ask questions or open an [issue](https://github.com/crunnna/blocketing-fabric-mod/issues).
+
+---
