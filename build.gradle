@@ -52,7 +52,7 @@ shadowJar {
 
 remapJar {
 	dependsOn shadowJar
-	input.set shadowJar.archiveFile
+	archiveFile.set(shadowJar.archiveFile)
 }
 
 processResources {
