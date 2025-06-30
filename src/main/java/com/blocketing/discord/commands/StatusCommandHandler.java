@@ -6,6 +6,8 @@ import com.blocketing.utils.UpdateChecker;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.minecraft.server.MinecraftServer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.time.Instant;
@@ -15,6 +17,7 @@ import java.time.Instant;
  * providing server status information such as TPS, MSPT, CPU, RAM, version and uptime.
  */
 public class StatusCommandHandler {
+    private static final Logger LOGGER = LoggerFactory.getLogger("Blocketing|Discord|StatusCommandHandler");
 
     /**
      * Handles the `/status` command interaction.
@@ -23,22 +26,23 @@ public class StatusCommandHandler {
      */
     public void handle(SlashCommandInteractionEvent event) {
         // Get the Minecraft server instance
-        final MinecraftServer server = Blocketing.getMinecraftServer();
+        MinecraftServer server = Blocketing.getMinecraftServer();
         if (server == null) {
+            LOGGER.error("Minecraft server is not running for /status command.");
             event.reply("The Minecraft server is not running.").setEphemeral(true).queue();
             return;
         }
 
         // Gather server metrics
-        final double mspt = ServerMetrics.getAverageMspt(server); // Average milliseconds per tick
-        final double tps = ServerMetrics.getTps(); // Current ticks per second
-        final String mem = ServerMetrics.getMemoryUsage(); // RAM usage formatted as "X MB / Y MB"
-        final double cpuLoad = ServerMetrics.getProcessCpuLoad(); // CPU load as a percentage
-        final String cpu = cpuLoad >= 0 ? String.format("%.1f%%", cpuLoad * 100) : "N/A";
-        final String serverName = server.getServerMotd();
-        final String modVersion = UpdateChecker.getCurrentModVersion();
-        final String serverVersion = server.getVersion();
-        final String uptime = ServerMetrics.getFormattedUptime();
+        double mspt = ServerMetrics.getAverageMspt(server); // Average milliseconds per tick
+        double tps = ServerMetrics.getTps(); // Current ticks per second
+        String mem = ServerMetrics.getMemoryUsage(); // RAM usage formatted as "X MB / Y MB"
+        double cpuLoad = ServerMetrics.getProcessCpuLoad(); // CPU load as a percentage
+        String cpu = cpuLoad >= 0 ? String.format("%.1f%%", cpuLoad * 100) : "N/A";
+        String serverName = server.getServerMotd();
+        String modVersion = UpdateChecker.getCurrentModVersion();
+        String serverVersion = server.getVersion();
+        String uptime = ServerMetrics.getFormattedUptime();
 
         // Build the embed description with formatted metrics
         final String description = """
@@ -69,5 +73,6 @@ public class StatusCommandHandler {
                 .setTimestamp(Instant.now());
 
         event.replyEmbeds(embed.build()).queue();
+        LOGGER.info("Sent server status to Discord: TPS={}, MSPT={}, CPU={}, RAM={}", tps, mspt, cpu, mem);
     }
 }

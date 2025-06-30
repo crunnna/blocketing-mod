@@ -6,6 +6,8 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.time.Instant;
@@ -15,6 +17,7 @@ import java.time.Instant;
  * It checks for permissions and executes the command on the Minecraft server.
  */
 public class ConsoleCommandHandler {
+    private static final Logger LOGGER = LoggerFactory.getLogger("Blocketing|Discord|ConsoleCommandHandler");
 
     /**
      * Handles a slash command interaction event from Discord to execute a console command on the Minecraft server.
@@ -28,6 +31,7 @@ public class ConsoleCommandHandler {
         // Check if the user has the required role
         if (opRoleId != null && event.getMember() != null &&
                 event.getMember().getRoles().stream().noneMatch(r -> r.getId().equals(opRoleId))) {
+            LOGGER.warn("User {} tried to execute a console command without permission.", event.getUser().getAsTag());
             event.reply("You do not have permission to use this command.").setEphemeral(true).queue();
             return;
         }
@@ -40,20 +44,21 @@ public class ConsoleCommandHandler {
         // Get the Minecraft server instance
         final MinecraftServer server = Blocketing.getMinecraftServer();
         if (server == null) {
+            LOGGER.error("Minecraft server is not available for command execution.");
             event.reply("Minecraft server is not available.").setEphemeral(true).queue();
             return;
         }
 
         // Execute the command on the server thread
         server.execute(() -> {
-            boolean success = false;
+            boolean success;
             try {
                 ServerCommandSource source = server.getCommandSource();
                 int result = server.getCommandManager().getDispatcher().execute(command, source);
                 success = result > 0;
+                LOGGER.info("Executed command from Discord user {}: '{}', result: {}", username, command, result);
             } catch (Exception e) {
-                // Log the exception for debugging
-                e.printStackTrace();
+                LOGGER.error("Exception while executing command from Discord user {}: '{}'", username, command, e);
                 success = false;
             }
 
