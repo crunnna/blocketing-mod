@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 
 import java.net.HttpURLConnection;
 import java.net.URI;
-import java.net.URL;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -122,7 +121,7 @@ public class UpdateChecker {
     private static String fetchLatestVersion() {
         // Fetches the latest release information from GitHub API
         try {
-            HttpURLConnection conn = (HttpURLConnection) new URL(GITHUB_API_URL).openConnection();
+            HttpURLConnection conn = (HttpURLConnection) URI.create(GITHUB_API_URL).toURL().openConnection();
             conn.setRequestProperty("Accept", "application/vnd.github+json");
 
             // try-with-resources for automatic closing of the scanner
