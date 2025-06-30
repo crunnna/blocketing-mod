@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
@@ -40,7 +41,7 @@ public class WebhookSender {
             );
 
             // Open HTTP connection to Discord webhook
-            URL url = new URL(webhookUrl);
+            URL url = URI.create(webhookUrl).toURL();
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json");
