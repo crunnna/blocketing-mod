@@ -1,9 +1,7 @@
 package com.blocketing.discord;
 
-import com.blocketing.Blocketing;
 import com.blocketing.discord.listener.JdaCommandListener;
 import com.blocketing.discord.listener.JdaMessageListener;
-import com.blocketing.utils.UpdateChecker;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
@@ -13,7 +11,6 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import com.blocketing.config.ConfigLoader;
 import net.dv8tion.jda.api.requests.GatewayIntent;
-import net.minecraft.server.MinecraftServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -136,8 +133,6 @@ public class JdaDiscordBot {
 
     /**
      * Gets the JDA instance for interacting with Discord.
-     *
-     * @return The JDA instance, or null if not initialized.
      */
     public static void stop() {
         if (jda != null) {

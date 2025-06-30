@@ -8,6 +8,8 @@ import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.time.Instant;
@@ -20,6 +22,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * providing a paginated list of online players on the Minecraft server.
  */
 public class PlayersCommandHandler {
+    private static final Logger LOGGER = LoggerFactory.getLogger("Blocketing|Discord|PlayersCommandHandler"); // Logger for player command events and errors.
+
     private final int MAX_ACTIVE = 2; // Maximum number of active paginated player list messages tracked for cleanup.
     private final LinkedList<String> recentPlayerMessages = new LinkedList<>(); // Stores the IDs of recent player list messages for cleanup.
     private final ConcurrentHashMap<String, Integer> playerPageMap = new ConcurrentHashMap<>(); // Maps Discord message IDs to their current page number.
@@ -34,6 +38,7 @@ public class PlayersCommandHandler {
     public void handle(SlashCommandInteractionEvent event, int page) {
         MinecraftServer server = Blocketing.getMinecraftServer();
         if (server == null) {
+            LOGGER.error("Minecraft server is not available for /players command.");
             event.reply("Minecraft server is not available.").setEphemeral(true).queue();
             return;
         }
@@ -62,10 +67,12 @@ public class PlayersCommandHandler {
                                 event.getChannel().editMessageComponentsById(oldId).setComponents().queue();
                                 playerPageMap.remove(oldId);
                             }
+                            LOGGER.info("Sent paginated player list (page {}/{}) to Discord.", page + 1, totalPages);
                         });
                     });
         } else {
             event.replyEmbeds(embed.build()).queue();
+            LOGGER.info("Sent player list (no pagination, {} players) to Discord.", info.online());
         }
     }
 
@@ -89,6 +96,7 @@ public class PlayersCommandHandler {
 
         event.deferEdit().queue();
         updatePlayersEmbed(event, page, messageId);
+        LOGGER.debug("Handled player list pagination button: {}, new page: {}", event.getComponentId(), page + 1);
     }
 
     /**
@@ -101,6 +109,7 @@ public class PlayersCommandHandler {
     private void updatePlayersEmbed(ButtonInteractionEvent event, int page, String messageId) {
         MinecraftServer server = Blocketing.getMinecraftServer();
         if (server == null) {
+            LOGGER.warn("Minecraft server is not available for player list pagination.");
             event.getHook().editOriginal("Minecraft server is not available.").queue();
             return;
         }
@@ -121,6 +130,7 @@ public class PlayersCommandHandler {
                 .queue();
 
         playerPageMap.put(messageId, page);
+        LOGGER.debug("Updated player list embed for message {} to page {}/{}", messageId, page + 1, Math.max(totalPages, 1));
     }
 
     /**

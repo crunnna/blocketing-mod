@@ -14,7 +14,7 @@ public class ColorUtil {
      * Finds the nearest Minecraft formatting color to the given AWT Color.
      *
      * @param color The AWT Color to find the nearest formatting for.
-     * @return The nearest Formatting color, or Formatting.WHITE if the input is null.
+     * @return The nearest Formatting color, or Formatting. WHITE if the input is null.
      */
     public static Formatting getNearestFormatting(final Color color) {
         if (color == null) return Formatting.WHITE;
@@ -23,7 +23,7 @@ public class ColorUtil {
         // Iterate through all formatting values to find the closest color
         for (Formatting formatting : Formatting.values()) {
             if (!formatting.isColor()) continue;
-            final Color mcColor = new Color(formatting.getColorValue(), true);
+            final Color mcColor = new Color(formatting.getColorValue() != null ? formatting.getColorValue() : 0xFFFFFF, true);
             final double dist = colorDistance(color, mcColor);
             if (dist < minDist) {
                 minDist = dist;
