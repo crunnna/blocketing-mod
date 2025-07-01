@@ -174,7 +174,7 @@ public class PlayersCommandHandler {
 
         return new EmbedBuilder()
                 .setTitle("👥 Online Players")
-                .setColor(new Color(0x2c3e50))
+                .setColor(new Color(0x77DD77))
                 .setDescription(description)
                 .setThumbnail("https://raw.githubusercontent.com/crunnna/blocketing-fabric-mod/main/src/main/resources/assets/blocketing/icon.png")
                 .setFooter(serverName + " - using Blocketing v" + modVersion, null)
