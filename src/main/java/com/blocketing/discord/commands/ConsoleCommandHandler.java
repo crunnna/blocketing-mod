@@ -2,6 +2,7 @@ package com.blocketing.discord.commands;
 
 import com.blocketing.Blocketing;
 import com.blocketing.config.ConfigLoader;
+import com.blocketing.utils.UpdateChecker;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.minecraft.server.MinecraftServer;
@@ -62,21 +63,28 @@ public class ConsoleCommandHandler {
                 success = false;
             }
 
-            // Build the response embed
-            EmbedBuilder embed = new EmbedBuilder()
-                    .setColor(new Color(0xf1c40f))
-                    .setTitle("Command Executed")
-                    .setDescription("**Command:** " + command + "\n**Executed by:** " + username)
-                    .setThumbnail(avatarUrl)
-                    .setFooter(server.getServerMotd() + " - using Blocketing v" + com.blocketing.utils.UpdateChecker.getCurrentModVersion(), null)
-                    .setTimestamp(Instant.now());
+            String titleEmoji = success ? "✅" : "❌";
+            String description = """
+**Command:**
+```
+%s
+```
+**→ Executed by: %s**
+     """.formatted(command, username);
 
-            // Send the result back to Discord
-            if (success) {
-                event.replyEmbeds(embed.build()).queue();
-            } else {
-                event.reply("Failed to execute command: `" + command + "`").setEphemeral(true).queue();
-            }
-        });
-    }
+             EmbedBuilder embed = new EmbedBuilder()
+                     .setTitle(titleEmoji + " Command Execution")
+                     .setColor(new Color(0xf1c40f))
+                     .setDescription(description)
+                     .setThumbnail(avatarUrl)
+                     .setFooter(server.getServerMotd() + " - using Blocketing v" + UpdateChecker.getCurrentModVersion(), null)
+                     .setTimestamp(Instant.now());
+
+             if (success) {
+                 event.replyEmbeds(embed.build()).queue();
+             } else {
+                 event.replyEmbeds(embed.build()).setEphemeral(true).queue();
+             }
+         });
+     }
 }
