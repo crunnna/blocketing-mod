@@ -54,7 +54,6 @@ tasks.shadowJar {
 
 	relocate 'oshi',               'com.blocketing.shadow.oshi'
 	relocate 'com.sun.jna',        'com.blocketing.shadow.jna'
-	relocate 'org.slf4j',          'com.blocketing.shadow.slf4j'
 }
 
 processResources {
