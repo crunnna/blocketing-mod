@@ -176,7 +176,7 @@ public class PlayersCommandHandler {
                 .setTitle("👥 Online Players")
                 .setColor(new Color(0x77DD77))
                 .setDescription(description)
-                .setThumbnail("https://raw.githubusercontent.com/crunnna/blocketing-fabric-mod/main/src/main/resources/assets/blocketing/icon.png")
+                .setThumbnail("https://raw.githubusercontent.com/crunnna/blocketing-mod/main/src/main/resources/assets/blocketing/icon.png")
                 .setFooter(serverName + " - using Blocketing v" + modVersion, null)
                 .setTimestamp(Instant.now());
     }

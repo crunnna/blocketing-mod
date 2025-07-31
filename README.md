@@ -1,5 +1,5 @@
 <div align="center"><center>
-  <img alt="Icon" width="300" height="300" src="https://raw.githubusercontent.com/crunnna/blocketing-fabric-mod/main/src\main\resources\assets\blocketing\icon.png">
+  <img alt="Icon" width="300" height="300" src="https://raw.githubusercontent.com/crunnna/blocketing-mod/main/src\main\resources\assets\blocketing\icon.png">
   <h1>Blocketing</h1>
 
   <h3>Blocketing is a Fabric mod for seamless communication between a Discord channel and a Minecraft server, enabling bidirectional message synchronization and command execution.</h3>
@@ -8,14 +8,14 @@
 [![Loader](https://img.shields.io/badge/Available%20for-Fabric-dbd0b4?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAcBAMAAACNPbLgAAABhGlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9TpX5UHMwgIpihOtlFRRxLFYtgobQVWnUwufQLmjQkKS6OgmvBwY/FqoOLs64OroIg+AHi6uKk6CIl/i8ptIj14Lgf7+497t4BQr3MNKsrAmi6bSZjUSmTXZUCr+iHiADG0Cszy4inFtPoOL7u4ePrXZhndT735xhQcxYDfBJxhBmmTbxBPLtpG5z3iUVWlFXic+JJky5I/Mh1xeM3zgWXBZ4pmunkPLFILBXaWGljVjQ14hnikKrplC9kPFY5b3HWylXWvCd/YTCnr6S4TnMUMSwhjgQkKKiihDJshGnVSbGQpP1oB/+I60+QSyFXCYwcC6hAg+z6wf/gd7dWfnrKSwpGge4Xx/kYBwK7QKPmON/HjtM4AfzPwJXe8lfqwNwn6bWWFjoCBreBi+uWpuwBlzvA8JMhm7Ir+WkK+TzwfkbflAWGboG+Na+35j5OH4A0dbV8AxwcAhMFyl7v8O6e9t7+PdPs7wd+dXKrd9SjeQAAAAlwSFlzAAAuIwAALiMBeKU/dgAAAAd0SU1FB+cLFAcgIbOcUjoAAAAbUExURQAAAB0tQTg0KoB6bZqSfq6mlLyynMa8pdvQtJRJT6UAAAABdFJOUwBA5thmAAAAAWJLR0QB/wIt3gAAAF5JREFUGNN10FENwCAMhOFqOQuzMAtYOAtYqGw6mkEvhL59yR9Ca5YDqyOC465eKYqQm6LoCkVwnwQOBYKdeA5l51zhFtrsnPmg6m3Z2akk15dFH1lWFQVxlUFv+2sAJlA9O7NwQRQAAAAASUVORK5CYII=)](https://fabricmc.net/)
 
 [![Modrinth downloads](https://img.shields.io/modrinth/dt/WQAfq7OC?label=Modrinth%20downloads&logo=modrinth)](https://modrinth.com/mod/blocketing)
-[![GitHub downloads](https://img.shields.io/github/downloads/crunnna/blocketing-fabric-mod/total?label=Github%20downloads&logo=github)](https://github.com/crunnna/blocketing-fabric-mod/releases)
+[![GitHub downloads](https://img.shields.io/github/downloads/crunnna/blocketing-mod/total?label=Github%20downloads&logo=github)](https://github.com/crunnna/blocketing-mod/releases)
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/crunnna/blocketing-fabric-mod/main/src/main/resources/assets/blocketing/screenshots/Blocketing_Screenshot1.png" width="600" alt="Minecraft chat with Discord integration"/>
+  <img src="https://raw.githubusercontent.com/crunnna/blocketing-mod/main/src/main/resources/assets/blocketing/screenshots/Blocketing_Screenshot1.png" width="600" alt="Minecraft chat with Discord integration"/>
   <br><br>
-  <img src="https://raw.githubusercontent.com/crunnna/blocketing-fabric-mod/main/src/main/resources/assets/blocketing/screenshots/Blocketing_Screenshot2.png" width="600" alt="Discord channel with Minecraft events"/>
+  <img src="https://raw.githubusercontent.com/crunnna/blocketing-mod/main/src/main/resources/assets/blocketing/screenshots/Blocketing_Screenshot2.png" width="600" alt="Discord channel with Minecraft events"/>
   <br><br>
-  <img src="https://raw.githubusercontent.com/crunnna/blocketing-fabric-mod/main/src/main/resources/assets/blocketing/screenshots/Blocketing_Screenshot3.png" width="600" alt="Discord-Channel with Minecraft events & status"/>
+  <img src="https://raw.githubusercontent.com/crunnna/blocketing-mod/main/src/main/resources/assets/blocketing/screenshots/Blocketing_Screenshot3.png" width="600" alt="Discord-Channel with Minecraft events & status"/>
 </div>
 
 
@@ -48,7 +48,7 @@
 
 ## 🚀 Installation
 ### 🔨 1. Install the Mod
-1. **Download the latest .jar** from the [Releases Page](https://github.com/crunnna/blocketing-fabric-mod/releases).
+1. **Download the latest .jar** from the [Releases Page](https://github.com/crunnna/blocketing-mod/releases).
 2. **Place the `.jar` file in your server’s `mods/` folder**.
 3. **Start the Minecraft server** with **Fabric**.
 4. **Configure the bot** using the in-game commands (see below).
@@ -134,6 +134,6 @@ To enable, set a webhook URL and use `/blocketing toggle player_chat_mode`.
 
 ## ❓ Need Help?
 
-Feel free to ask questions or open an [issue](https://github.com/crunnna/blocketing-fabric-mod/issues).
+Feel free to ask questions or open an [issue](https://github.com/crunnna/blocketing-mod/issues).
 
 ---

@@ -24,8 +24,8 @@ import java.util.Scanner;
  */
 public class UpdateChecker {
     private static final Logger LOGGER = LoggerFactory.getLogger("Blocketing|UpdateChecker");
-    private static final String GITHUB_API_URL = "https://api.github.com/repos/crunnna/blocketing-fabric-mod/releases/latest";
-    private static final String CHANGELOG_URL = "https://github.com/crunnna/blocketing-fabric-mod/releases/latest";
+    private static final String GITHUB_API_URL = "https://api.github.com/repos/crunnna/blocketing-mod/releases/latest";
+    private static final String CHANGELOG_URL = "https://github.com/crunnna/blocketing-mod/releases/latest";
 
     /**
      * Gets the current mod version from Fabric mod metadata.
@@ -48,8 +48,8 @@ public class UpdateChecker {
         // Compares the current version with the latest version
         if (latest != null && current != null && !latest.equals(current)) {
             String msg = "**A new Blocketing version (`"+ latest +"`) is available!**\n"
-                    + "[View Changelog](https://github.com/crunnna/blocketing-fabric-mod/releases/latest)";
-            String logoUrl = "https://raw.githubusercontent.com/crunnna/blocketing-fabric-mod/main/src/main/resources/assets/blocketing/icon.png";
+                    + "[View Changelog](https://github.com/crunnna/blocketing-mod/releases/latest)";
+            String logoUrl = "https://raw.githubusercontent.com/crunnna/blocketing-mod/main/src/main/resources/assets/blocketing/icon.png";
             JdaDiscordBot.sendEmbedToDiscord(
                     "\uD83C\uDD95 Update Available",
                     msg,

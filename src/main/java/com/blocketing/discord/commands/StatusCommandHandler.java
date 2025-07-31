@@ -68,7 +68,7 @@ public class StatusCommandHandler {
                 .setTitle("🖥️ Server Status")
                 .setColor(new Color(0x2c3e50))
                 .setDescription(description)
-                .setThumbnail("https://raw.githubusercontent.com/crunnna/blocketing-fabric-mod/main/src/main/resources/assets/blocketing/icon.png")
+                .setThumbnail("https://raw.githubusercontent.com/crunnna/blocketing-mod/main/src/main/resources/assets/blocketing/icon.png")
                 .setFooter(serverName + " - using Blocketing v" + modVersion, null)
                 .setTimestamp(Instant.now());
 
