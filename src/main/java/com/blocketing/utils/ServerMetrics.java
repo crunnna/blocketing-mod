@@ -4,28 +4,39 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.server.MinecraftServer;
 
 import java.lang.management.ManagementFactory;
+import java.util.concurrent.ThreadLocalRandom;
+
 import com.sun.management.OperatingSystemMXBean;
 
 /**
  * Utility class for tracking server metrics such as TPS, MSPT, memory usage, CPU load, and uptime.
- * <p>
- * This class is not meant to be instantiated.
+ *
+ * TPS (Ticks Per Second) is dynamically calculated using a moving average of recent tick durations.
+ * To make the TPS value smoother and more accurate—especially when tick times fluctuate rapidly—
+ * an Exponential Moving Average (EMA) is applied on top of the moving average.
  */
 public class ServerMetrics {
-    // Number of ticks to average for TPS calculation
-    private static final int MAX_TICKS = 100;
-    private static final long NANOS_PER_SECOND = 1_000_000_000L;
-    private static final double TPS_BASE = 20.0;
 
-    // Stores the duration (in nanoseconds) of the last MAX_TICKS ticks
+    // TPS calculation fields
+    /** Number of ticks to store for TPS calculation */
+    private static final int MAX_TICKS = 100;
+    /** Minimum and maximum window size for averaging */
+    private static final int DYNAMIC_WINDOW_MIN = 30;
+    private static final int DYNAMIC_WINDOW_MAX = 200;
+    /** Smoothing factor for EMA */
+    private static final double ALPHA = 0.1;
+    /** Stores the duration (in nanoseconds) of the last MAX_TICKS ticks */
     private static final long[] tickTimes = new long[MAX_TICKS];
     private static int tickIndex = 0;
-    private static boolean filled = false;
+    private static boolean tickBufferFilled = false;
     private static long lastTickTime = 0;
     private static int intervalCounter = 0;
-    private static double smoothedTps = TPS_BASE;
+    private static int dynamicWindow = 50;
+    private static double tps = 20.0;
+    private static double emaTps = 20.0;
 
-    // Stores the server start time in milliseconds
+    // Uptime fields
+    /** Stores the server start time in milliseconds */
     private static long serverStartTimeMillis = -1;
 
     /**
@@ -34,63 +45,101 @@ public class ServerMetrics {
      */
     public static void register() {
         ServerTickEvents.END_SERVER_TICK.register(server -> {
-            // Set the server start time on the first tick
-            if (serverStartTimeMillis == -1) {
-                serverStartTimeMillis = System.currentTimeMillis();
-            }
-
+            setServerStartTimeIfNeeded();
             final long now = System.nanoTime();
 
+            // Dynamic TPS calculation
+            // On each tick, store the tick duration in a ring buffer. Every 5 ticks, pick a new averaging window size.
+            // Calculate the average tick time over the current window, then update the TPS using an EMA for smoothing.
             if (lastTickTime != 0) {
                 final long diff = now - lastTickTime;
                 tickTimes[tickIndex] = diff;
                 tickIndex = (tickIndex + 1) % MAX_TICKS;
-                if (tickIndex == 0) filled = true;
+                if (tickIndex == 0) tickBufferFilled = true;
 
                 intervalCounter++;
-                // Update smoothed TPS every 5 ticks
+                // Dynamically adjust the averaging window every 5 ticks
                 if (intervalCounter >= 5) {
                     intervalCounter = 0;
-                    smoothedTps = calculateTps();
+                    dynamicWindow = ThreadLocalRandom.current().nextInt(DYNAMIC_WINDOW_MIN, DYNAMIC_WINDOW_MAX + 1);
                 }
+
+                updateTps();
             }
             lastTickTime = now;
         });
     }
 
     /**
-     * Calculates the smoothed TPS based on the recorded tick times.
-     * Averages the last MAX_TICKS tick durations and returns the TPS value.
-     *
-     * @return The calculated TPS value.
+     * Sets the server start time if it hasn't been set yet.
      */
-    private static double calculateTps() {
-        final int count = filled ? MAX_TICKS : tickIndex;
-        if (count == 0) return TPS_BASE;
-        long totalNanos = 0;
-        for (int i = 0; i < count; i++) {
-            totalNanos += tickTimes[i];
+    private static void setServerStartTimeIfNeeded() {
+        if (serverStartTimeMillis == -1) {
+            serverStartTimeMillis = System.currentTimeMillis();
         }
-        final double averageTickNanos = (double) totalNanos / count;
-        if (averageTickNanos == 0) return TPS_BASE;
-        final double tps = NANOS_PER_SECOND / averageTickNanos;
-        return Math.min(tps, TPS_BASE);
+    }
+
+    /**
+     * Calculates the average tick time over the last 'samples' ticks.
+     * @param samples Number of recent ticks to average
+     * @return Average tick duration in nanoseconds
+     */
+    private static double calculateAverageTickTime(int samples) {
+        double avg = 0;
+        for (int i = 0; i < samples; i++) {
+            int index = (tickIndex - i - 1 + MAX_TICKS) % MAX_TICKS;
+            avg += tickTimes[index];
+        }
+        return samples > 0 ? avg / samples : 0;
+    }
+
+    /**
+     * Updates the TPS value using an Exponential Moving Average (EMA) for smoother and more accurate results.
+     * Should only be called if at least one tick has passed (lastTickTime != 0).
+     */
+    private static void updateTps() {
+        int availableTicks = tickBufferFilled ? MAX_TICKS : tickIndex;
+        int samples = Math.min(dynamicWindow, availableTicks);
+        double avg = calculateAverageTickTime(samples);
+        if (samples > 0 && avg > 0) {
+            double mspt = avg / 1_000_000.0;
+            double instantTps = msptToTps(mspt);
+            tps = applyEma(instantTps, emaTps);
+            emaTps = tps;
+        }
+    }
+
+    /**
+     * Converts milliseconds per tick (mspt) to TPS.
+     * @param mspt Milliseconds per tick
+     * @return Calculated TPS
+     */
+    private static double msptToTps(double mspt) {
+        return 1000.0 / mspt;
+    }
+
+    /**
+     * Applies Exponential Moving Average (EMA) smoothing.
+     * @param newValue The new value to incorporate
+     * @param prevEma The previous EMA value
+     * @return The updated EMA value
+     */
+    private static double applyEma(double newValue, double prevEma) {
+        return ALPHA * newValue + (1 - ALPHA) * prevEma;
     }
 
     /**
      * Gets the current TPS (Ticks Per Second) for the server.
-     *
-     * @return The smoothed TPS value.
+     * @return The smoothed TPS value, rounded to two decimals
      */
     public static double getTps() {
-        return smoothedTps;
+        return Math.round(tps * 100.0) / 100.0;
     }
 
     /**
      * Gets the average milliseconds per tick (MSPT) for the server.
-     *
-     * @param server The Minecraft server instance.
-     * @return The average MSPT in milliseconds.
+     * @param server The Minecraft server instance
+     * @return The average MSPT in milliseconds
      */
     public static double getAverageMspt(final MinecraftServer server) {
         return server.getAverageNanosPerTick() / 1_000_000.0;
@@ -98,8 +147,7 @@ public class ServerMetrics {
 
     /**
      * Gets the current CPU load of the process.
-     *
-     * @return The CPU load as a value between 0.0 and 1.0, or -1 if not available.
+     * @return The CPU load as a value between 0.0 and 1.0, or -1 if not available
      */
     public static double getProcessCpuLoad() {
         try {
@@ -112,8 +160,7 @@ public class ServerMetrics {
 
     /**
      * Gets the current memory usage of the server.
-     *
-     * @return A string representing the used and maximum memory in MB.
+     * @return A string representing the used and maximum memory in MB
      */
     public static String getMemoryUsage() {
         final long used = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024);
@@ -123,7 +170,7 @@ public class ServerMetrics {
 
     /**
      * Gets the server uptime in milliseconds.
-     * @return Uptime in milliseconds, or -1 if not started.
+     * @return Uptime in milliseconds, or -1 if not started
      */
     public static long getUptimeMillis() {
         if (serverStartTimeMillis == -1) return -1;
@@ -133,8 +180,7 @@ public class ServerMetrics {
     /**
      * Gets the formatted server uptime as a string.
      * The format is "HHh MMm SSs".
-     *
-     * @return A string representing the formatted uptime.
+     * @return A string representing the formatted uptime
      */
     public static String getFormattedUptime() {
         final long uptimeMillis = getUptimeMillis();
@@ -144,13 +190,5 @@ public class ServerMetrics {
         final long minutes = (uptimeSeconds % 3600) / 60;
         final long seconds = uptimeSeconds % 60;
         return String.format("%02dh %02dm %02ds", hours, minutes, seconds);
-    }
-
-    /**
-     * Resets the server uptime. This is typically used when the server restarts.
-     * Call this method to reset the uptime tracking.
-     */
-    public static void resetUptime() {
-        serverStartTimeMillis = -1;
     }
 }
