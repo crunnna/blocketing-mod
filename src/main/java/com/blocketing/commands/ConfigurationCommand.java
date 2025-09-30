@@ -137,7 +137,7 @@ public final class ConfigurationCommand {
                                 })
                         )
                         // Toggle update info notifications
-                        .then(CommandManager.literal("update-info")
+                        .then(CommandManager.literal("update_info")
                                 .executes(context -> {
                                     final boolean enabled = !ConfigLoader.getBooleanProperty("UPDATE_INFO_ENABLED", true);
                                     ConfigLoader.setProperty("UPDATE_INFO_ENABLED", String.valueOf(enabled));
