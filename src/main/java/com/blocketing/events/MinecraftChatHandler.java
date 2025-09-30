@@ -38,8 +38,8 @@ public class MinecraftChatHandler {
      * @param parameters Message parameters (unused).
      */
     public static void onChatMessage(SignedMessage message, ServerPlayerEntity sender, MessageType.Parameters parameters) {
-        final String playerName = sender.getGameProfile().getName();
-        final String playerUUID = sender.getGameProfile().getId().toString();
+        final String playerName = sender.getGameProfile().name();
+        final String playerUUID = sender.getGameProfile().id().toString();
         final String chatMessage = message.getContent().getString();
         final boolean webhookMode = ConfigLoader.getBooleanProperty("WEBHOOK_CHAT_ENABLED", false);
 

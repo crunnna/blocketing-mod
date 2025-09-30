@@ -31,8 +31,8 @@ public class PlayerEventHandler {
     private static void onPlayerJoin(ServerPlayNetworkHandler handler, PacketSender sender, MinecraftServer server) {
         if (handler.getPlayer() == null) return; // Safety check
 
-        final String playerName = handler.getPlayer().getGameProfile().getName();
-        final String playerUUID = handler.getPlayer().getUuid().toString();
+        final String playerName = handler.getPlayer().getGameProfile().name();
+        final String playerUUID = handler.getPlayer().getGameProfile().id().toString();
         // Construct the player's avatar URL (scale=8 for normal size)
         final String avatarUrl = "https://api.mineatar.io/face/" + playerUUID + "?scale=8";
 
@@ -51,8 +51,8 @@ public class PlayerEventHandler {
     private static void onPlayerDisconnect(ServerPlayNetworkHandler handler, MinecraftServer server) {
         if (handler.getPlayer() == null) return; // Safety check
 
-        final String playerName = handler.getPlayer().getGameProfile().getName();
-        final String playerUUID = handler.getPlayer().getUuid().toString();
+        final String playerName = handler.getPlayer().getGameProfile().name();
+        final String playerUUID = handler.getPlayer().getGameProfile().id().toString();
         // Construct the player's avatar URL (scale=8 for normal size)
         final String avatarUrl = "https://api.mineatar.io/face/" + playerUUID + "?scale=8";
 

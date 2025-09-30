@@ -156,7 +156,7 @@ public class PlayersCommandHandler {
             // List only the players for the current page
             List<ServerPlayerEntity> pagePlayers = players.subList(fromIndex, toIndex);
             for (ServerPlayerEntity p : pagePlayers) {
-                playerList.append("- ").append(p.getGameProfile().getName()).append("\n");
+                playerList.append("- ").append(p.getGameProfile().name()).append("\n");
             }
         }
 
