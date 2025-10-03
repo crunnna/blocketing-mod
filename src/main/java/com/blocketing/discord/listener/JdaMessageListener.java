@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import com.blocketing.config.ConfigLoader;
 import com.blocketing.Blocketing;
 import net.minecraft.server.MinecraftServer;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class listens for messages received in a specific Discord channel
@@ -23,6 +24,11 @@ public class JdaMessageListener extends ListenerAdapter {
         String channelId = ConfigLoader.getProperty("CHANNEL_ID");
         if (!event.getChannel().getId().equals(channelId)) return; // Check if the message is in the configured channel
         if (!event.getMessage().getAttachments().isEmpty() || !event.getMessage().getEmbeds().isEmpty()) return; // Ignore messages with attachments or embeds
+
+        // Log Discord-Message to console if enabled
+        if (ConfigLoader.getBooleanProperty("DISCORD_CHAT_LOG_ENABLED", false)) {
+            LoggerFactory.getLogger("Blocketing|Discord|Chat").info("[Discord] <{}>: {}", event.getAuthor().getName(), event.getMessage().getContentDisplay());
+        }
 
         // Get the Minecraft server instance
         MinecraftServer server = Blocketing.getMinecraftServer();

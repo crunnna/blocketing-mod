@@ -145,9 +145,18 @@ public final class ConfigurationCommand {
                                     return 1;
                                 })
                         )
+                        // Toggle Discord chat logging
+                        .then(CommandManager.literal("discord_chat_log")
+                                .executes(context -> {
+                                    boolean enabled = !ConfigLoader.getBooleanProperty("DISCORD_CHAT_LOG_ENABLED", false);
+                                    ConfigLoader.setProperty("DISCORD_CHAT_LOG_ENABLED", String.valueOf(enabled));
+                                    context.getSource().sendFeedback(() -> Text.of("Discord-Chat-Logging is now " + (enabled ? "enabled" : "disabled") + "."), true);
+                                    return 1;
+                                })
+                        )
                         // List available toggles
                         .executes(context -> {
-                            context.getSource().sendFeedback(() -> Text.of("Available toggles: advancements, deaths, player_chat_mode, update-info"), true);
+                            context.getSource().sendFeedback(() -> Text.of("Available toggles: advancements, deaths, player_chat_mode, update-info, discord_chat_log"), true);
                             return 1;
                         })
                 )
