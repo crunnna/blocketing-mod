@@ -43,7 +43,6 @@
 - ✅ In-game configuration via commands 🎮
 - ✅ Update notifications for new mod versions 🔔
 - ✅ Paginated player list and server status via Discord slash commands 📊
-
 ---
 
 ## 🚀 Installation
@@ -72,35 +71,37 @@ All configuration is done in-game using `/blocketing` commands (OP only):
 
 ### Setup Discord Integration
 
-- `/blocketing setup token <token>`  
+- `/blocketing setup token <token>`
   Set the Discord bot token.
-- `/blocketing setup guild <guild_id>`  
+- `/blocketing setup guild <guild_id>`
   Set the Discord server (guild) ID.
-- `/blocketing setup channel <channel_id>`  
+- `/blocketing setup channel <channel_id>`
   Set the Discord channel ID for message sync.
-- `/blocketing setup op_role <role_id>`  
+- `/blocketing setup op_role <role_id>`
   Set the Discord role ID required to run `/console` from Discord.
-- `/blocketing setup webhook_url <url>`  
+- `/blocketing setup webhook_url <url>`
   Set the Discord webhook URL for player chat webhook mode.
-- `/blocketing setup`  
+- `/blocketing setup`
   List available setup commands.
 
 ### Feature Toggles
 
-- `/blocketing toggle advancements`  
+- `/blocketing toggle advancements`
   Enable/disable sending advancement messages to Discord.
-- `/blocketing toggle deaths`  
+- `/blocketing toggle deaths`
   Enable/disable sending death messages to Discord.
-- `/blocketing toggle player_chat_mode`  
+- `/blocketing toggle player_chat_mode`
   Enable/disable player chat webhook mode (uses webhook for chat, with player avatar and name).
-- `/blocketing toggle update-info`  
+- `/blocketing toggle update-info`
   Enable/disable update notifications for new mod versions.
-- `/blocketing toggle`  
+- `/blocketing toggle discord_chat_log`
+  Enable/disable logging of Discord chat messages to the server console.
+- `/blocketing toggle`
   List available toggles.
 
 ### Other Commands
 
-- `/blocketing reload`  
+- `/blocketing reload`
   Reload the configuration and restart the Discord bot.
 
 ---
