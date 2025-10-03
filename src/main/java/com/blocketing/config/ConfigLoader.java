@@ -45,6 +45,11 @@ public final class ConfigLoader {
             try (InputStream input = Files.newInputStream(Paths.get(CONFIG_PATH))) {
                 config.load(input);
             }
+            // Set default values for missing properties
+            if (!config.containsKey("DISCORD_CHAT_LOG_ENABLED")) {
+                config.setProperty("DISCORD_CHAT_LOG_ENABLED", "true");
+                saveConfig();
+            }
         } catch (IOException e) {
             LOGGER.error("Error loading the configuration file", e);
         }
