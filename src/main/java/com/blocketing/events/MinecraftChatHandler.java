@@ -46,7 +46,7 @@ public class MinecraftChatHandler {
         if (webhookMode) {
             // Use a player avatar for the webhook
             String avatarUrl = "https://api.mineatar.io/face/" + playerUUID + "?scale=8";
-            WebhookSender.send(playerName, avatarUrl, chatMessage);
+            new Thread(() -> WebhookSender.send(playerName, avatarUrl, chatMessage)).start();
         } else {
             // Send as a plain message via the bot
             JdaDiscordBot.sendMessageToDiscord("**[" + playerName + "]** " + chatMessage);
