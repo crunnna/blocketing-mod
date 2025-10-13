@@ -42,21 +42,22 @@ public class UpdateChecker {
      */
     public static void checkForUpdateAndNotifyDiscord(MinecraftServer server) {
         if (!ConfigLoader.getBooleanProperty("UPDATE_INFO_ENABLED", true)) return;
-        String latest = normalizeVersion(fetchLatestVersion());
-        String current = normalizeVersion(getCurrentModVersion());
+        new Thread(() -> {
+            String latest = normalizeVersion(fetchLatestVersion());
+            String current = normalizeVersion(getCurrentModVersion());
 
-        // Compares the current version with the latest version
-        if (latest != null && current != null && !latest.equals(current)) {
-            String msg = "**A new Blocketing version (`"+ latest +"`) is available!**\n"
-                    + "[View Changelog](https://github.com/crunnna/blocketing-mod/releases/latest)";
-            String logoUrl = "https://raw.githubusercontent.com/crunnna/blocketing-mod/main/src/main/resources/assets/blocketing/icon.png";
-            JdaDiscordBot.sendEmbedToDiscord(
-                    "\uD83C\uDD95 Update Available",
-                    msg,
-                    0xFF0000,
-                    logoUrl
-            );
-        }
+            if (latest != null && current != null && !latest.equals(current)) {
+                String msg = "**A new Blocketing version (`"+ latest +"`) is available!**\n"
+                        + "[View Changelog](https://github.com/crunnna/blocketing-mod/releases/latest)";
+                String logoUrl = "https://raw.githubusercontent.com/crunnna/blocketing-mod/main/src/main/resources/assets/blocketing/icon.png";
+                JdaDiscordBot.sendEmbedToDiscord(
+                        "\uD83C\uDD95 Update Available",
+                        msg,
+                        0xFF0000,
+                        logoUrl
+                );
+            }
+        }).start();
     }
 
     /**
@@ -70,47 +71,48 @@ public class UpdateChecker {
                 !ConfigLoader.getBooleanProperty("UPDATE_INFO_ENABLED", true)) {
             return;
         }
+        new Thread(() -> {
+            String latest = normalizeVersion(fetchLatestVersion());
+            String current = normalizeVersion(getCurrentModVersion());
+            if (latest != null && current != null && !latest.equals(current)) {
 
-        String latest = normalizeVersion(fetchLatestVersion());
-        String current = normalizeVersion(getCurrentModVersion());
-        if (latest != null && current != null && !latest.equals(current)) {
+                Text prefix = Text.literal("[Blocketing] ")
+                        .setStyle(Style.EMPTY.withColor(Formatting.RED).withBold(true));
 
-            Text prefix = Text.literal("[Blocketing] ")
-                    .setStyle(Style.EMPTY.withColor(Formatting.RED).withBold(true));
+                Text newVersion = Text.literal("New version ")
+                        .setStyle(Style.EMPTY.withColor(Formatting.WHITE).withBold(false));
 
-            Text newVersion = Text.literal("New version ")
-                    .setStyle(Style.EMPTY.withColor(Formatting.WHITE).withBold(false));
+                Text version = Text.literal(latest)
+                        .setStyle(Style.EMPTY.withColor(Formatting.GREEN).withBold(true).withUnderline(true));
 
-            Text version = Text.literal(latest)
-                    .setStyle(Style.EMPTY.withColor(Formatting.GREEN).withBold(true).withUnderline(true));
+                Text available = Text.literal(" available!  ")
+                        .setStyle(Style.EMPTY.withColor(Formatting.WHITE).withBold(false));
 
-            Text available = Text.literal(" available!  ")
-                    .setStyle(Style.EMPTY.withColor(Formatting.WHITE).withBold(false));
+                Text changelogLink = Text.literal("→ Changelog")
+                        .setStyle(Style.EMPTY
+                                .withColor(Formatting.WHITE)
+                                .withUnderline(true)
+                                .withClickEvent(new ClickEvent.OpenUrl(URI.create(CHANGELOG_URL)))
+                        );
 
-            Text changelogLink = Text.literal("→ Changelog")
-                    .setStyle(Style.EMPTY
-                            .withColor(Formatting.WHITE)
-                            .withUnderline(true)
-                            .withClickEvent(new ClickEvent.OpenUrl(URI.create(CHANGELOG_URL)))
-                    );
+                // Append the version information and changelog link
+                Text fullMessage = prefix
+                        .copy()
+                        .append(newVersion)
+                        .append(version)
+                        .append(available)
+                        .append(changelogLink);
 
-            // Append the version information and changelog link
-            Text fullMessage = prefix
-                    .copy()
-                    .append(newVersion)
-                    .append(version)
-                    .append(available)
-                    .append(changelogLink);
+                player.sendMessage(fullMessage, false);
 
-            player.sendMessage(fullMessage, false);
-
-            // Additional tip for toggling update notifications
-            player.sendMessage(
-                    Text.literal("Tip: Use /blocketing toggle update-info to enable/disable this notification.")
-                            .styled(s -> s.withColor(Formatting.GRAY).withItalic(true)),
-                    false
-            );
-        }
+                // Additional tip for toggling update notifications
+                player.sendMessage(
+                        Text.literal("Tip: Use /blocketing toggle update-info to enable/disable this notification.")
+                                .styled(s -> s.withColor(Formatting.GRAY).withItalic(true)),
+                        false
+                );
+            }
+        }).start();
     }
 
     /**
