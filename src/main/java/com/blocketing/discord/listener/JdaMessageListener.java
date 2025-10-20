@@ -1,11 +1,16 @@
 package com.blocketing.discord.listener;
 
+import com.blocketing.utils.ColorUtil;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import com.blocketing.config.ConfigLoader;
 import com.blocketing.Blocketing;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import org.slf4j.LoggerFactory;
+import java.awt.Color;
 
 /**
  * This class listens for messages received in a specific Discord channel
@@ -37,36 +42,36 @@ public class JdaMessageListener extends ListenerAdapter {
             String content = event.getMessage().getContentDisplay();
 
             // Get top role color
-            java.awt.Color roleColor = null;
+            Color roleColor = null;
             if (event.getMember() != null && event.getMember().getColor() != null) {
                 roleColor = event.getMember().getColor();
             }
-            net.minecraft.util.Formatting mcRoleColor = com.blocketing.utils.ColorUtil.getNearestFormatting(roleColor);
+            Formatting mcRoleColor = ColorUtil.getNearestFormatting(roleColor);
 
             // Build formatted message
-            net.minecraft.text.Text prefix = net.minecraft.text.Text.literal("[")
-                    .styled(style -> style.withColor(net.minecraft.util.Formatting.BLUE))
-                    .append(net.minecraft.text.Text.literal("Discord")
-                            .styled(style -> style.withColor(net.minecraft.util.Formatting.BLUE).withBold(true)))
-                    .append(net.minecraft.text.Text.literal("] ")
-                            .styled(style -> style.withColor(net.minecraft.util.Formatting.BLUE)));
+            Text prefix = Text.literal("[")
+                    .styled(style -> style.withColor(Formatting.BLUE))
+                    .append(Text.literal("Discord")
+                            .styled(style -> style.withColor(Formatting.BLUE).withBold(true)))
+                    .append(Text.literal("] ")
+                            .styled(style -> style.withColor(Formatting.BLUE)));
 
             // Create user text with color
-            net.minecraft.text.Text user = net.minecraft.text.Text.literal("<" + username + ">")
+            Text user = Text.literal("<" + username + ">")
                     .styled(style -> style.withColor(mcRoleColor));
 
             // Create message text with white color
-            net.minecraft.text.Text msg = net.minecraft.text.Text.literal(" " + content)
-                    .styled(style -> style.withColor(net.minecraft.util.Formatting.WHITE));
+            Text msg = Text.literal(" " + content)
+                    .styled(style -> style.withColor(Formatting.WHITE));
 
             // Combine all parts into a full message
-            net.minecraft.text.Text full = net.minecraft.text.Text.empty()
+            Text full = Text.empty()
                     .append(prefix)
                     .append(user)
                     .append(msg);
 
             // Send the message to the Minecraft server's chat
-            for (net.minecraft.server.network.ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
+            for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
                 player.sendMessage(full, false);
             }
         }
