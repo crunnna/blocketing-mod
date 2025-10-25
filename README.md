@@ -43,6 +43,7 @@
 - ✅ In-game configuration via commands 🎮
 - ✅ Update notifications for new mod versions 🔔
 - ✅ Paginated player list and server status via Discord slash commands 📊
+- ✅ Multi-server support to run multiple Minecraft server instances using the same Discord bot token (per-server channel filtering) ♾️
 ---
 
 ## 🚀 Installation
