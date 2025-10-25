@@ -75,6 +75,7 @@ public class JdaDiscordBot {
 
     /**
      * Sends a plain text message to the configured Discord channel.
+     * Uses a single CHANNEL_ID from configuration.
      *
      * @param message The message to send.
      */
@@ -84,20 +85,25 @@ public class JdaDiscordBot {
             LOGGER.warn("JDA is not initialized. Cannot send message to Discord.");
             return;
         }
-        if (isValidSnowflake(channelId)) {
-            final var channel = jda.getTextChannelById(channelId);
-            if (channel != null) {
-                channel.sendMessage(message).queue();
-            } else {
-                LOGGER.warn("Discord channel not found for ID: {}", channelId);
-            }
-        } else {
+        if (channelId == null || channelId.isBlank()) {
+            LOGGER.warn("CHANNEL_ID is not configured. Cannot send message to Discord.");
+            return;
+        }
+        if (isInvalidSnowflake(channelId)) {
             LOGGER.warn("Invalid Discord channel ID: {}", channelId);
+            return;
+        }
+        final var channel = jda.getTextChannelById(channelId);
+        if (channel != null) {
+            channel.sendMessage(message).queue();
+        } else {
+            LOGGER.warn("Discord channel not found for ID: {}", channelId);
         }
     }
 
     /**
      * Sends an embed message to the configured Discord channel.
+     * Uses a single CHANNEL_ID from configuration.
      *
      * @param title       The title of the embed.
      * @param description The description of the embed.
@@ -110,13 +116,12 @@ public class JdaDiscordBot {
             LOGGER.warn("JDA is not initialized. Cannot send embed to Discord.");
             return;
         }
-        if (!isValidSnowflake(channelId)) {
-            LOGGER.warn("Invalid Discord channel ID: {}", channelId);
+        if (channelId == null || channelId.isBlank()) {
+            LOGGER.warn("CHANNEL_ID is not configured. Cannot send embed to Discord.");
             return;
         }
-        final MessageChannel channel = jda.getChannelById(MessageChannel.class, channelId);
-        if (channel == null) {
-            LOGGER.warn("Discord channel not found for ID: {}", channelId);
+        if (isInvalidSnowflake(channelId)) {
+            LOGGER.warn("Invalid Discord channel ID: {}", channelId);
             return;
         }
 
@@ -127,6 +132,12 @@ public class JdaDiscordBot {
                 .setTimestamp(Instant.now());
         if (avatarUrl != null && !avatarUrl.isBlank()) {
             embed.setThumbnail(avatarUrl);
+        }
+
+        final MessageChannel channel = jda.getChannelById(MessageChannel.class, channelId);
+        if (channel == null) {
+            LOGGER.warn("Discord channel not found for ID: {}", channelId);
+            return;
         }
         channel.sendMessageEmbeds(embed.build()).queue();
     }
@@ -152,12 +163,12 @@ public class JdaDiscordBot {
     }
 
     /**
-     * Checks if the given string is a valid Discord snowflake ID.
+     * Validates if the given ID is a valid Discord snowflake.
      *
-     * @param id The string to check.
-     * @return True if the string is a valid snowflake ID, false otherwise.
+     * @param id The ID to validate.
+     * @return true if the ID is invalid, false otherwise.
      */
-    private static boolean isValidSnowflake(String id) {
-        return id != null && id.matches("\\d{17,20}");
+    private static boolean isInvalidSnowflake(String id) {
+        return id == null || !id.matches("\\d{17,20}");
     }
 }
