@@ -51,6 +51,26 @@ public class JdaDiscordBot {
     }
 
     /**
+     * Gets the JDA instance for interacting with Discord.
+     */
+    public static void stop() {
+        if (jda != null) {
+            jda.shutdownNow();
+            jda = null;
+            LOGGER.info("JDA Discord Bot stopped.");
+        }
+    }
+
+    /**
+     * Restarts the JDA Discord Bot.
+     * This will stop the current instance and start a new one.
+     */
+    public static void restart() {
+        stop();
+        start();
+    }
+
+    /**
      * Registers slash commands for the Discord bot in the specified guild.
      *
      * @param guildId The ID of the guild where the commands should be registered.
@@ -140,26 +160,6 @@ public class JdaDiscordBot {
             return;
         }
         channel.sendMessageEmbeds(embed.build()).queue();
-    }
-
-    /**
-     * Gets the JDA instance for interacting with Discord.
-     */
-    public static void stop() {
-        if (jda != null) {
-            jda.shutdownNow();
-            jda = null;
-            LOGGER.info("JDA Discord Bot stopped.");
-        }
-    }
-
-    /**
-     * Restarts the JDA Discord Bot.
-     * This will stop the current instance and start a new one.
-     */
-    public static void restart() {
-        stop();
-        start();
     }
 
     /**
