@@ -26,8 +26,10 @@ public class JdaMessageListener extends ListenerAdapter {
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         if (event.getAuthor().isBot()) return; // Ignore messages from bots
-        String channelId = ConfigLoader.getProperty("CHANNEL_ID");
-        if (!event.getChannel().getId().equals(channelId)) return; // Check if the message is in the configured channel
+        String channelCfg = ConfigLoader.getProperty("CHANNEL_ID");
+        if (channelCfg == null || channelCfg.isBlank()) return;
+        final String eventChannelId = event.getChannel().getId();
+        if (!eventChannelId.equals(channelCfg)) return; // Check if the message is in the configured channel
         if (!event.getMessage().getAttachments().isEmpty() || !event.getMessage().getEmbeds().isEmpty()) return; // Ignore messages with attachments or embeds
 
         // Log Discord-Message to console if enabled
